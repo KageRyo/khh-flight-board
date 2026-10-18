@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="zh-Hant" data-display="gate">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#101043"><title>高雄國際機場 · 登機門</title>
+<link rel="stylesheet" href="./display.css"><script type="module" src="./display.mjs"></script>
+</head>
+<body>
+<nav class="controls" aria-label="看板設定">
+<a href="./index.html">航班總覽</a><a href="./counter.html">報到櫃台</a>
+<label>航線 <select id="source"><option value="int">國際出境</option><option value="dom">國內離站</option></select></label>
+<label>登機門 <select id="location"></select></label>
+<label id="airline-control" hidden>航空公司 <select id="airline"></select></label>
+<label id="flight-control">航班 <select id="flight"></select></label>
+<button id="refresh" type="button">更新</button><button id="fullscreen" type="button">全螢幕</button>
+<time id="clock"></time><span id="date"></span><p id="health" role="status"></p><a id="official" href="https://www.kia.gov.tw/">資料來源：高雄國際航空站</a><span>航班資訊展示 · 請以現場公告為準</span>
+</nav>
+<main class="monitor" id="monitor" aria-label="登機門看板">
+
+<div class="screen-heading"><h1>登機門<small>Boarding gate</small></h1><div id="location-value" class="location-value">—</div></div>
+<div id="content" aria-busy="true"></div>
+<div id="empty" class="empty" role="status">正在取得官方航班資料</div>
+<footer class="screen-footer" id="screen-footer" hidden><p id="notice" role="status" hidden></p></footer>
+</main>
+</body></html>

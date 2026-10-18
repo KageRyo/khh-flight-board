@@ -3,13 +3,13 @@
   "version": "0.2.0",
   "private": true,
   "type": "module",
-  "description": "高雄國際機場航班資訊看板，支援國際入出境、國內到離站、全螢幕輪播與官方資料快照。",
+  "description": "高雄國際機場航班看板，提供航班總覽、登機門與報到櫃台畫面，支援全螢幕及中英文跑馬燈。",
   "engines": { "node": ">=22.19" },
   "scripts": {
     "start": "node --env-file-if-exists=.env server.mjs",
     "test": "node --test",
     "build:pages": "node scripts/build-pages.mjs",
     "check:freshness": "node scripts/check-freshness.mjs",
-    "check": "node --check server.mjs && node --check lib/feed.mjs && node --check public/model.mjs && node --check public/config.mjs && node --check public/app.mjs && node --check scripts/build-pages.mjs && node --check scripts/check-freshness.mjs && node --check public/marquee.mjs"
+    "check": "node --check server.mjs && node --check lib/feed.mjs && node --check public/model.mjs && node --check public/config.mjs && node --check public/app.mjs && node --check scripts/build-pages.mjs && node --check scripts/check-freshness.mjs && node --check public/marquee.mjs && node --check public/display.mjs && node --check public/display-model.mjs"
   }
 }

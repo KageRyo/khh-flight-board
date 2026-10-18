@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#181624">
-  <meta name="description" content="高雄國際機場航班資訊看板，支援國際入出境、國內到離站、全螢幕輪播與官方資料快照。">
+  <meta name="description" content="高雄國際機場航班看板，提供航班總覽、登機門與報到櫃台畫面，支援全螢幕及中英文跑馬燈。">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="zh_TW">
   <meta property="og:title" content="KHH Flight Board · 高雄機場航班看板">
@@ -38,8 +38,8 @@
       <div id="empty" class="empty" hidden><h2 id="empty-title">正在取得航班</h2><p id="empty-copy">請稍候</p></div>
       <div class="announcement"><div id="marquee" class="marquee" aria-label="旅客提醒"><p>高雄國際航空站歡迎您　Welcome to Kaohsiung International Airport</p></div></div>
     </main>
-    <div class="statusbar"><p><span id="live-dot" class="live-dot"></span><strong id="connection">連線中</strong><span id="summary"></span><span id="date"></span></p><div><button id="cycle" aria-pressed="false" title="看完所有頁後切換下一種看板">四看板輪播</button><span id="page" aria-label="航班頁碼">01 / 01</span><button id="previous" aria-label="上一頁" aria-keyshortcuts="ArrowLeft" title="上一頁（←）">‹</button><button id="rotate" aria-pressed="true" aria-keyshortcuts="Space" title="暫停或開始輪播（空白鍵）">Ⅱ 暫停輪播</button><button id="next" aria-label="下一頁" aria-keyshortcuts="ArrowRight" title="下一頁（→）">›</button></div></div>
-    <footer><p>最後成功取得 <time id="last-success">尚未成功</time><span id="age"></span><span id="poll-label"></span></p><details><summary>關於資料</summary><p>這是參考高雄機場現場看板製作的非官方專案。航班取自機場公開資料；取得時間不代表官方更新時間，資料也未附航班日期。行程請以機場及航空公司公告為準。<a id="source-link" target="_blank" rel="noreferrer">官方資料 ↗</a></p></details></footer>
+    <div class="statusbar"><p><span id="live-dot" class="live-dot"></span><strong id="connection">連線中</strong><span id="summary"></span><span id="date"></span></p><div><label class="motion-control">跑馬燈 <select id="marquee-motion" aria-label="跑馬燈動畫"><option value="system">依系統</option><option value="on">開啟動畫</option><option value="off">關閉動畫</option></select></label><button id="cycle" aria-pressed="false" title="看完所有頁後切換下一種看板">四看板輪播</button><span id="page" aria-label="航班頁碼">01 / 01</span><button id="previous" aria-label="上一頁" aria-keyshortcuts="ArrowLeft" title="上一頁（←）">‹</button><button id="rotate" aria-pressed="true" aria-keyshortcuts="Space" title="暫停或開始輪播（空白鍵）">Ⅱ 暫停輪播</button><button id="next" aria-label="下一頁" aria-keyshortcuts="ArrowRight" title="下一頁（→）">›</button></div></div>
+    <footer><p>最後成功取得 <time id="last-success">尚未成功</time><span id="age"></span><span id="poll-label"></span></p><details><summary>關於資料</summary><p>這是參考高雄機場現場看板製作的非官方專案。航班取自機場公開資料；取得時間不代表官方更新時間，資料也未附航班日期。行程請以機場及航空公司公告為準。<a id="source-link" target="_blank" rel="noreferrer">官方資料 ↗</a></p></details><nav class="view-links" aria-label="其他位置看板"><a href="./gate.html">登機門</a><a href="./counter.html">報到櫃台</a></nav></footer>
   </div>
   <noscript>請啟用 JavaScript 以取得航班資訊。</noscript>
 </body>

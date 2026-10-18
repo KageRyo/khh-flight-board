@@ -16,6 +16,10 @@ test('Pages 建置產生四種獨立快照、原始取得時間與子路徑資�
     assert.match(html,/src="\.\/app\.mjs\?v=[a-f0-9]{12}"/);
     assert.match(html,/href="\.\/styles\.css\?v=[a-f0-9]{12}"/);
     const app=await readFile(join(outDir,'app.mjs'),'utf8');assert.match(app,/from '\.\/config\.mjs\?v=[a-f0-9]{12}'/);
+    for(const name of ['gate.html','counter.html']){
+      const screen=await readFile(join(outDir,name),'utf8');assert.match(screen,/data-mode="static"/);
+      assert.match(screen,/src="\.\/display\.mjs\?v=[a-f0-9]{12}"/);
+    }
   }finally{await rm(outDir,{recursive:true,force:true});}
 });
 test('官方故障時 Pages 保留上次成功時間並標示快取；沒有可用舊快照則拒絕發布',async()=>{
