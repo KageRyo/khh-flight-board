@@ -1,0 +1,31 @@
+{
+  "reviewedAt": "2026-10-19",
+  "timezone": "Asia/Taipei",
+  "description": "依高雄國際航空站官方旅客指南整理，非現場跑馬燈即時訊息。",
+  "notices": [
+    {
+      "id": "parking",
+      "text": "機場停車場於假日及連續假期易滿場，建議多加利用大眾運輸工具往返。",
+      "source": "https://www.kia.gov.tw/TRANS.html",
+      "sourceTitle": "交通資訊：停車場"
+    },
+    {
+      "id": "mrt",
+      "text": "搭乘高雄捷運請利用紅線 R4 高雄國際機場站，2 號出口通往國內線航廈，6 號出口通往國際線航廈。",
+      "source": "https://www.kia.gov.tw/TRANS.html",
+      "sourceTitle": "交通資訊：搭乘高雄捷運"
+    },
+    {
+      "id": "taxi",
+      "text": "搭乘排班計程車，請至國內線或國際線航廈一樓到站出口路緣候車。",
+      "source": "https://www.kia.gov.tw/TRANS.html",
+      "sourceTitle": "交通資訊：排班計程車"
+    },
+    {
+      "id": "check-in",
+      "text": "請提早辦理報到；報到截止時間、手提及託運行李限制，請事先向所搭乘航空公司確認。",
+      "source": "https://www.kia.gov.tw/FACNSER-onboard.html",
+      "sourceTitle": "搭機規定：搭機報到手續及應託運之行李規定"
+    }
+  ]
+}

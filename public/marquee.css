@@ -1,0 +1,55 @@
+.announcement .passenger-marquee,
+.passenger-marquee {
+  flex: 1;
+  min-width: 0;
+  max-width: 100%;
+  margin: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: clip;
+}
+.notice-track {
+  display: flex;
+  width: max-content;
+  animation: passenger-notices var(--notice-duration, 100s) linear infinite;
+}
+.notice-group {
+  display: flex;
+  flex: none;
+}
+.notice-group > span {
+  flex: none;
+  padding-inline-end: 4em;
+}
+.passenger-marquee:hover .notice-track {
+  animation-play-state: paused;
+}
+.passenger-marquee:focus-visible {
+  outline: 1px solid currentColor;
+  outline-offset: -1px;
+}
+.passenger-marquee.notice-paused,
+.passenger-marquee:focus-within {
+  overflow-x: auto;
+}
+.notice-paused .notice-track,
+.passenger-marquee:focus-within .notice-track {
+  animation: none;
+}
+.notice-paused .notice-duplicate,
+.passenger-marquee:focus-within .notice-duplicate,
+.notice-paused .notice-group > [aria-hidden],
+.passenger-marquee:focus-within .notice-group > [aria-hidden] {
+  display: none;
+}
+@keyframes passenger-notices {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .announcement .passenger-marquee,
+  .passenger-marquee { overflow-x: auto; }
+  .notice-track { animation: none; }
+  .notice-duplicate,
+  .notice-group > [aria-hidden] { display: none; }
+}

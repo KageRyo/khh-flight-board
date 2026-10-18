@@ -19,6 +19,7 @@
   <meta name="twitter:image" content="https://kageryo.github.io/khh-flight-board/social-preview.png">
   <title>KHH Flight Board · 高雄機場航班看板</title>
   <link rel="icon" href="./favicon.svg"><link rel="stylesheet" href="./styles.css">
+  <link rel="stylesheet" href="./marquee.css">
   <script type="module" src="./app.mjs"></script>
 </head>
 <body>
@@ -31,13 +32,13 @@
       <div class="tools"><input id="search" type="search" aria-label="搜尋航班、地點、航空公司" placeholder="搜尋航班 / 地點"><select id="filter" aria-label="篩選航班"><option value="all">全部航班</option><option value="active">未完成航班</option></select><button id="clear-filters" aria-label="清除搜尋與篩選" title="清除搜尋與篩選" hidden>清除</button><button id="share" aria-label="複製看板連結" title="複製看板連結">連結</button><button id="refresh" aria-label="更新航班">↻</button><button id="fullscreen" aria-label="進入全螢幕">⛶</button></div>
     </nav>
     <main class="fids" id="fids" aria-label="機場航班看板">
-      <header class="board-title"><time id="clock">--:--</time><h1><span id="title-zh">國際線出境</span> <span id="title-en">DEPARTURES</span></h1><div class="airport-brand"><span class="brand-strokes" aria-hidden="true">///</span><strong>KHH</strong></div></header>
+      <header class="board-title"><time id="clock">--:--</time><h1><span id="title-zh">國際線出境</span> <span id="title-en">DEPARTURES</span></h1><img class="airport-brand" src="./khh-mark.svg" alt="KHH"></header>
       <div id="notice" class="notice" role="status" hidden></div>
       <section id="board" class="board" aria-label="航班資訊" aria-busy="true"></section>
       <div id="empty" class="empty" hidden><h2 id="empty-title">正在取得航班</h2><p id="empty-copy">請稍候</p></div>
-      <div class="announcement"><p>高雄國際航空站歡迎您　Welcome to Kaohsiung International Airport</p><span id="page">01 / 01</span></div>
+      <div class="announcement"><div id="marquee" class="marquee" aria-label="旅客提醒"><p>高雄國際航空站歡迎您　Welcome to Kaohsiung International Airport</p></div></div>
     </main>
-    <div class="statusbar"><p><span id="live-dot" class="live-dot"></span><strong id="connection">連線中</strong><span id="summary"></span><span id="date"></span></p><div><button id="cycle" aria-pressed="false" title="看完所有頁後切換下一種看板">四看板輪播</button><button id="previous" aria-label="上一頁" aria-keyshortcuts="ArrowLeft" title="上一頁（←）">‹</button><button id="rotate" aria-pressed="true" aria-keyshortcuts="Space" title="暫停或開始輪播（空白鍵）">Ⅱ 暫停輪播</button><button id="next" aria-label="下一頁" aria-keyshortcuts="ArrowRight" title="下一頁（→）">›</button></div></div>
+    <div class="statusbar"><p><span id="live-dot" class="live-dot"></span><strong id="connection">連線中</strong><span id="summary"></span><span id="date"></span></p><div><button id="cycle" aria-pressed="false" title="看完所有頁後切換下一種看板">四看板輪播</button><span id="page" aria-label="航班頁碼">01 / 01</span><button id="previous" aria-label="上一頁" aria-keyshortcuts="ArrowLeft" title="上一頁（←）">‹</button><button id="rotate" aria-pressed="true" aria-keyshortcuts="Space" title="暫停或開始輪播（空白鍵）">Ⅱ 暫停輪播</button><button id="next" aria-label="下一頁" aria-keyshortcuts="ArrowRight" title="下一頁（→）">›</button></div></div>
     <footer><p>最後成功取得 <time id="last-success">尚未成功</time><span id="age"></span><span id="poll-label"></span></p><details><summary>關於資料</summary><p>這是參考高雄機場現場看板製作的非官方專案。航班取自機場公開資料；取得時間不代表官方更新時間，資料也未附航班日期。行程請以機場及航空公司公告為準。<a id="source-link" target="_blank" rel="noreferrer">官方資料 ↗</a></p></details></footer>
   </div>
   <noscript>請啟用 JavaScript 以取得航班資訊。</noscript>

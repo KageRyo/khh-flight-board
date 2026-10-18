@@ -1,7 +1,9 @@
 import { validSnapshot } from './model.mjs';
 import { BOARDS, sourceUrl, layout, nextRotation } from './config.mjs';
+import { mountMarquee } from './marquee.mjs';
 const $ = id => document.getElementById(id);
 const STATIC = document.documentElement.dataset.mode === 'static';
+const marquee = mountMarquee($('marquee'));
 let preferences = {};
 try { const saved = JSON.parse(localStorage.getItem('khh-preferences')); if(saved && typeof saved === 'object') preferences = saved; } catch {}
 let source = [location.hash.slice(1),preferences.source,'int'].find(value=>typeof value==='string'&&Object.hasOwn(BOARDS,value));
@@ -10,7 +12,7 @@ let page = 0, rotating = typeof preferences.rotating==='boolean'?preferences.rot
 let cycleBoards = preferences.cycleBoards === true;
 $('search').value=typeof preferences.query==='string'?preferences.query:'';
 $('filter').value=preferences.filter==='active'?'active':'all';
-function renderRotation(){ $('rotate').setAttribute('aria-pressed',String(rotating));$('rotate').textContent=rotating?'Ⅱ 暫停輪播':'▶ 開始輪播';$('cycle').setAttribute('aria-pressed',String(cycleBoards)); }
+function renderRotation(){ $('rotate').setAttribute('aria-pressed',String(rotating));$('rotate').textContent=rotating?'Ⅱ 暫停輪播':'▶ 開始輪播';$('cycle').setAttribute('aria-pressed',String(cycleBoards));marquee.setPaused(!rotating); }
 function savePreferences(){
   try { localStorage.setItem('khh-preferences',JSON.stringify({source,query:$('search').value,filter:$('filter').value,rotating,cycleBoards})); } catch { /* 設定無法儲存時仍可操作看板。 */ }
 }
@@ -19,6 +21,7 @@ const dateFormat = new Intl.DateTimeFormat('zh-TW',{timeZone:'Asia/Taipei',year:
 const clockFormat = new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Taipei',hour:'2-digit',minute:'2-digit',hour12:false});
 const englishStatus = {'離站':'Departed','起飛':'Departed','抵達':'Arrived','到站':'Arrived','登機中':'Boarding','報到中':'Check In','辦理報到':'Check In','準時':'On Time','延誤':'Delayed','取消':'Cancelled','尚未登機':'Yet to board','登機門關閉':'Gate Closed','最後登機':'Final Call'};
 const airlineNames = {CAL:'中華航空',EVA:'長榮航空',UIA:'立榮',MDA:'華信',DAC:'德安',TTW:'tigerair',CPA:'國泰航空',HKE:'香港快運',APJ:'peach',HVN:'越南航空',VJC:'VietJet Air',TWB:'德威航空',AXM:'AirAsia',AIQ:'AirAsia',CEB:'Cebu Pacific'};
+const airlineEnglish = {CAL:'CHINA AIRLINES',EVA:'EVA AIR',UIA:'UNI AIR',MDA:'MANDARIN AIRLINES',DAC:'DAILY AIR',TTW:'tigerair',CPA:'CATHAY PACIFIC',HKE:'HK express',APJ:'peach',HVN:'VIETNAM AIRLINES',VJC:'VietJet Air',TWB:'t’way',AXM:'AirAsia',AIQ:'AirAsia',CEB:'CEBU PACIFIC'};
 function metrics(){
   const available=$('fids').clientHeight-document.querySelector('.board-title').offsetHeight-document.querySelector('.announcement').offsetHeight-$('notice').offsetHeight;
   return layout(innerWidth,innerHeight,BOARDS[source].international,available);
@@ -36,7 +39,8 @@ function airlineBadge(f){
   if(/^https:\/\/www\.kia\.gov\.tw\/images\//.test(f.logo)){
     const img=node('img');img.src=f.logo;img.alt='';img.loading='lazy';img.addEventListener('error',()=>img.remove(),{once:true});badge.append(img);
   }
-  const word=node('span','airline-word');word.append(node('b','',airlineNames[f.airlineCode] || f.airline.replace(/航空公司$|航空$/,'')),node('small','',f.airlineCode));badge.append(word);return badge;
+  const word=node('span','airline-word'),english=BOARDS[source].international?(airlineEnglish[f.airlineCode]||f.airlineCode):f.airlineCode;
+  word.append(node('b','',airlineNames[f.airlineCode] || f.airline.replace(/航空公司$|航空$/,'')),node('small','',english));badge.append(word);return badge;
 }
 function table(flights,index,rowCount){
   const config=BOARDS[source], domestic=!config.international;
@@ -55,7 +59,7 @@ function table(flights,index,rowCount){
     const place=node('td','place',f.destination);place.append(node('small','',f.airport));
     tr.append(airline,node('td','flight-number',f.number.replace(/^([A-Z0-9]{2})(\d)/,'$1-$2')),place,node('td','scheduled',compactTime(f.scheduled)));
     if(domestic){const updated=node('td','updated',compactTime(f.updatedTime));updated.title=`${f.timeLabel} ${f.updatedTime}`;tr.append(updated);}
-    tr.append(node('td','gate',f.gate));
+    const gate=node('td','gate');gate.append(node('span',f.gate==='—'?'':'gate-badge',f.gate));tr.append(gate);
     const status=node('td',`flight-status status-${f.tone}`),main=node('span','status-main');
     const stamp = f.updatedTime !== '—' && ['departed','arrived'].includes(f.tone) ? compactTime(f.updatedTime)+' ' : '';
     main.append(document.createTextNode(stamp+f.status));if(englishStatus[f.status])main.append(node('span','status-english',englishStatus[f.status]));status.append(main);
