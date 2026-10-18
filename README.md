@@ -1,5 +1,9 @@
 # KHH Flight Board
 
+[![CI](https://github.com/KageRyo/khh-flight-board/actions/workflows/check.yml/badge.svg)](https://github.com/KageRyo/khh-flight-board/actions/workflows/check.yml)
+[![Pages](https://github.com/KageRyo/khh-flight-board/actions/workflows/pages.yml/badge.svg)](https://github.com/KageRyo/khh-flight-board/actions/workflows/pages.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
 高雄國際機場航班資訊看板，提供國際出境、國際入境、國內離站與國內到站四種畫面。參考機場現場看板的配色與排版，適合開在電腦或大螢幕上輪播。
 
 這是非官方專案，資料取自機場公開 JSON，定期更新；行程請以機場及航空公司公告為準。
