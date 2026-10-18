@@ -22,7 +22,8 @@ const files = {
   '/model.mjs': ['model.mjs', 'text/javascript; charset=utf-8'],
   '/config.mjs': ['config.mjs', 'text/javascript; charset=utf-8'],
   '/styles.css': ['styles.css', 'text/css; charset=utf-8'],
-  '/favicon.svg': ['favicon.svg', 'image/svg+xml']
+  '/favicon.svg': ['favicon.svg', 'image/svg+xml'],
+  '/social-preview.png': ['social-preview.png', 'image/png']
 };
 const server = createServer(async (req, res) => {
   res.setHeader('X-Content-Type-Options', 'nosniff');

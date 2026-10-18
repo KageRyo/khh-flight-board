@@ -3,7 +3,20 @@
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#181624">
-  <meta name="description" content="依高雄小港機場現場看板照片重製的國際入出境、國內到離站航班資訊。">
+  <meta name="description" content="高雄國際機場航班資訊看板，支援國際入出境、國內到離站、全螢幕輪播與官方資料快照。">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="zh_TW">
+  <meta property="og:title" content="KHH Flight Board · 高雄機場航班看板">
+  <meta property="og:description" content="查看高雄機場國際入出境與國內到離站航班，亦可全螢幕輪播。非官方專案，資料定期更新。">
+  <meta property="og:url" content="https://kageryo.github.io/khh-flight-board/">
+  <meta property="og:image" content="https://kageryo.github.io/khh-flight-board/social-preview.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="高雄機場國際出境航班看板畫面">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="KHH Flight Board · 高雄機場航班看板">
+  <meta name="twitter:description" content="高雄機場四種航班看板，支援全螢幕輪播。非官方專案。">
+  <meta name="twitter:image" content="https://kageryo.github.io/khh-flight-board/social-preview.png">
   <title>KHH Flight Board · 高雄機場航班看板</title>
   <link rel="icon" href="./favicon.svg"><link rel="stylesheet" href="./styles.css">
   <script type="module" src="./app.mjs"></script>
@@ -15,7 +28,7 @@
       <div class="tabs" role="group" aria-label="選擇航班看板">
         <button data-source="int" class="selected" aria-pressed="true">國際出境</button><button data-source="int-arr" aria-pressed="false">國際入境</button><button data-source="dom" aria-pressed="false">國內離站</button><button data-source="dom-arr" aria-pressed="false">國內到站</button>
       </div>
-      <div class="tools"><input id="search" type="search" aria-label="搜尋航班、地點、航空公司" placeholder="搜尋航班 / 地點"><select id="filter" aria-label="篩選航班"><option value="all">全部航班</option><option value="active">未完成航班</option></select><button id="refresh" aria-label="更新航班">↻</button><button id="fullscreen" aria-label="進入全螢幕">⛶</button></div>
+      <div class="tools"><input id="search" type="search" aria-label="搜尋航班、地點、航空公司" placeholder="搜尋航班 / 地點"><select id="filter" aria-label="篩選航班"><option value="all">全部航班</option><option value="active">未完成航班</option></select><button id="share" aria-label="複製看板連結" title="複製看板連結">連結</button><button id="refresh" aria-label="更新航班">↻</button><button id="fullscreen" aria-label="進入全螢幕">⛶</button></div>
     </nav>
     <main class="fids" id="fids" aria-label="機場航班看板">
       <header class="board-title"><time id="clock">--:--</time><h1><span id="title-zh">國際線出境</span> <span id="title-en">DEPARTURES</span></h1><div class="airport-brand"><span class="brand-strokes" aria-hidden="true">///</span><strong>KHH</strong></div></header>
@@ -25,7 +38,7 @@
       <div class="announcement"><p>高雄國際航空站歡迎您　Welcome to Kaohsiung International Airport</p><span id="page">01 / 01</span></div>
     </main>
     <div class="statusbar"><p><span id="live-dot" class="live-dot"></span><strong id="connection">連線中</strong><span id="summary"></span><span id="date"></span></p><div><button id="previous" aria-label="上一頁">‹</button><button id="rotate" aria-pressed="true">Ⅱ 暫停輪播</button><button id="next" aria-label="下一頁">›</button></div></div>
-    <footer><p>最後成功取得 <time id="last-success">尚未成功</time><span id="age"></span><span id="poll-label"></span></p><details><summary>資料與看板說明</summary><p>依使用者提供的現場照片重現雙欄／單欄、色帶與航班列布局。部分字型及航空公司識別為網頁適配，非精確逐像素複製。官方公開 JSON 未提供航班日期與發布時間；最後成功取得時間不代表來源最後更新時間。非內部 FIDS 同步，行程以機場及航空公司公告為準。<a id="source-link" target="_blank" rel="noreferrer">官方資料 ↗</a></p></details></footer>
+    <footer><p>最後成功取得 <time id="last-success">尚未成功</time><span id="age"></span><span id="poll-label"></span></p><details><summary>關於資料</summary><p>這是參考高雄機場現場看板製作的非官方專案。航班取自機場公開資料；取得時間不代表官方更新時間，資料也未附航班日期。行程請以機場及航空公司公告為準。<a id="source-link" target="_blank" rel="noreferrer">官方資料 ↗</a></p></details></footer>
   </div>
   <noscript>請啟用 JavaScript 以取得航班資訊。</noscript>
 </body>
