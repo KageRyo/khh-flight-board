@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#17112d">
+  <meta name="description" content="在家查看高雄小港機場離站航班，以彩色航班卡片呈現官方公開資料。">
+  <title>KHH Flight Board · 高雄離站航班</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/styles.css">
+  <script type="module" src="/app.mjs"></script>
+</head>
+<body>
+  <div class="shell">
+    <header class="masthead">
+      <div class="identity"><span class="plane" aria-hidden="true">✈</span><div><p class="eyebrow">KHH FLIGHT BOARD <span>高雄國際航空站</span></p><h1>離站航班 <span>Departures</span></h1></div></div>
+      <div class="clock"><time id="clock">--:--:--</time><p id="date">台灣時間 UTC+8</p></div>
+    </header>
+    <section class="toolbar" aria-label="航班顯示設定">
+      <div class="tabs" role="group" aria-label="航線"><button id="international" class="selected" aria-pressed="true">國際線 <span>INT</span></button><button id="domestic" aria-pressed="false">國內線 <span>DOM</span></button></div>
+      <div class="tools"><label class="search"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="搜尋航班、目的地、航空公司" aria-label="搜尋航班、目的地、航空公司"></label><select id="filter" aria-label="篩選航班狀態"><option value="all">全部航班</option><option value="active">未離站航班</option></select><button id="refresh" aria-label="更新航班" title="重新查詢；官方資料查詢仍受輪詢間隔限制">↻ <span>更新</span></button><button id="fullscreen" aria-label="進入全螢幕" title="全螢幕">⛶ <span>全螢幕</span></button></div>
+    </section>
+    <section class="board-meta" aria-label="看板狀態"><p><span class="live-dot" id="live-dot"></span><strong id="connection">連線中</strong><span id="summary">讀取官方公開資料</span></p><p id="rotation-note">彩色航班卡片 / 台灣時間</p></section>
+    <div id="notice" class="notice" role="status" hidden></div>
+    <main id="board" class="board" aria-label="離站航班卡片" aria-busy="true"></main>
+    <div id="empty" class="empty" hidden><span aria-hidden="true">✈</span><h2 id="empty-title">正在取得航班</h2><p id="empty-copy">請稍候，正在連線至高雄機場公開資料。</p></div>
+    <nav class="pagination" aria-label="航班頁面"><p><span id="count">0</span> 班航班 <span class="divider">/</span> 依表定時間排列</p><div><button id="previous" aria-label="上一頁">←</button><span id="page" aria-live="polite">01 / 01</span><button id="next" aria-label="下一頁">→</button><button id="rotate" aria-pressed="true">Ⅱ 暫停輪播</button></div></nav>
+    <footer><div><p><span class="footer-label">最後成功取得</span> <time id="last-success">尚未成功</time> <span id="age"></span></p><p class="source-note">來源：<a id="source-link" href="https://www.kia.gov.tw/Announce/NewsArea/InstantSchedule_INTDEP.json" target="_blank" rel="noreferrer">高雄國際航空站公開資料 ↗</a> <span id="poll-label">每 60 秒查詢</span> · 非內部 FIDS 同步</p></div><details><summary>關於此看板</summary><p>本機 MVP，以彩色航班卡片呈現官方公開資料。參考圖片未經確認，非現場看板的精確複製。資料來源未提供航班日期及發布時間；「最後成功取得」為本機取得資料時間，無法保證上游新鮮度。所有時間採台灣時間；實際航班請以航空公司及機場公告為準。</p></details></footer>
+  </div>
+  <noscript>此看板需要啟用 JavaScript 才能取得與更新航班資訊。</noscript>
+</body>
+</html>
