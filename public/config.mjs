@@ -5,6 +5,12 @@ export const BOARDS = Object.freeze({
   'dom-arr': { label:'國內到站', title:'國內線到站', english:'ARRIVALS', direction:'arr', international:false, airportLabel:'來自地點', airportEnglish:'From', suffix:'DOMARR' }
 });
 export const sourceUrl = source => `https://www.kia.gov.tw/Announce/NewsArea/InstantSchedule_${BOARDS[source].suffix}.json`;
+export function nextRotation(source, page, pageCount, cycleBoards) {
+  if (page + 1 < Math.max(1, pageCount)) return { source, page:page + 1 };
+  const sources = Object.keys(BOARDS);
+  const nextSource = cycleBoards ? sources[(sources.indexOf(source) + 1) % sources.length] : source;
+  return { source:nextSource, page:0 };
+}
 export function layout(width, height, international, availableHeight = height * .7) {
   const panels = international && width >= 1000 ? 2 : 1;
   const rowHeight = Math.max(34, Math.min(110, height * .044));

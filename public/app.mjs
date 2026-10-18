@@ -1,5 +1,5 @@
 import { validSnapshot } from './model.mjs';
-import { BOARDS, sourceUrl, layout } from './config.mjs';
+import { BOARDS, sourceUrl, layout, nextRotation } from './config.mjs';
 const $ = id => document.getElementById(id);
 const STATIC = document.documentElement.dataset.mode === 'static';
 let preferences = {};
@@ -7,11 +7,12 @@ try { const saved = JSON.parse(localStorage.getItem('khh-preferences')); if(save
 let source = [location.hash.slice(1),preferences.source,'int'].find(value=>typeof value==='string'&&Object.hasOwn(BOARDS,value));
 let snapshot = null, problem = null, origin = '', loading = false, cacheWarning = '';
 let page = 0, rotating = typeof preferences.rotating==='boolean'?preferences.rotating:true, pollSeconds = 60, timer, request, generation = 0, lastRotation = Date.now(), renderedKey = '';
+let cycleBoards = preferences.cycleBoards === true;
 $('search').value=typeof preferences.query==='string'?preferences.query:'';
 $('filter').value=preferences.filter==='active'?'active':'all';
-function renderRotation(){ $('rotate').setAttribute('aria-pressed',String(rotating));$('rotate').textContent=rotating?'Ⅱ 暫停輪播':'▶ 開始輪播'; }
+function renderRotation(){ $('rotate').setAttribute('aria-pressed',String(rotating));$('rotate').textContent=rotating?'Ⅱ 暫停輪播':'▶ 開始輪播';$('cycle').setAttribute('aria-pressed',String(cycleBoards)); }
 function savePreferences(){
-  try { localStorage.setItem('khh-preferences',JSON.stringify({source,query:$('search').value,filter:$('filter').value,rotating})); } catch { /* 設定無法儲存時仍可操作看板。 */ }
+  try { localStorage.setItem('khh-preferences',JSON.stringify({source,query:$('search').value,filter:$('filter').value,rotating,cycleBoards})); } catch { /* 設定無法儲存時仍可操作看板。 */ }
 }
 renderRotation();
 const dateFormat = new Intl.DateTimeFormat('zh-TW',{timeZone:'Asia/Taipei',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false});
@@ -87,6 +88,7 @@ function render(){
   $('fids').classList.toggle('arrival',config.direction==='arr');$('title-zh').textContent=config.title;$('title-en').textContent=config.english;
   $('summary').textContent=`${config.label} · ${flights.length} 班`;$('page').textContent=`${String(page+1).padStart(2,'0')} / ${String(total).padStart(2,'0')}`;
   $('previous').disabled=total<=1;$('next').disabled=total<=1;
+  $('clear-filters').hidden=!$('search').value&&$('filter').value==='all';
   document.querySelectorAll('[data-source]').forEach(button=>{const selected=button.dataset.source===source;button.classList.toggle('selected',selected);button.setAttribute('aria-pressed',String(selected));});
   $('source-link').href=sourceUrl(source);
   if(!flights.length){$('empty-title').textContent=!snapshot?loading?'正在取得航班':'暫時無法取得資料':snapshot.flights.length?'沒有符合條件的航班':'官方目前未提供航班';$('empty-copy').textContent=!snapshot?'將持續自動重試；目前沒有成功快取。':snapshot.flights.length?'請調整搜尋或切換為全部航班。':'此為官方空清單，將定期重新查詢。';}
@@ -94,7 +96,7 @@ function render(){
 }
 function restore(){try{const value=JSON.parse(localStorage.getItem(`khh-v2-${source}`));if(validSnapshot(value,source)){snapshot={...value,stale:true};origin='瀏覽器';}}catch{}}
 async function refresh(){
-  if(loading)return;clearTimeout(timer);loading=true;render();const run=generation,selected=source,controller=new AbortController();request=controller;const timeout=setTimeout(()=>controller.abort(),28000);
+  if(loading)return;clearTimeout(timer);const firstLoad=!snapshot;loading=true;render();const run=generation,selected=source,controller=new AbortController();request=controller;const timeout=setTimeout(()=>controller.abort(),28000);
   try{
     const url=STATIC?`./data/${selected}.json?t=${Math.floor(Date.now()/60000)}`:`./api/flights?source=${selected}`;
     const response=await fetch(url,{cache:'no-store',signal:controller.signal}),value=await response.json();if(run!==generation)return;
@@ -103,18 +105,36 @@ async function refresh(){
     if(snapshot&&Date.parse(snapshot.lastSuccess)>Date.parse(value.lastSuccess)){problem='網站資料較舊，保留較新的瀏覽器快取';}
     else{snapshot=value;origin=value.stale?'伺服器':'';problem=value.error||null;try{localStorage.setItem(`khh-v2-${source}`,JSON.stringify(value));cacheWarning='';}catch{cacheWarning='瀏覽器無法儲存快取';}}
   }catch(err){if(run!==generation)return;problem=controller.signal.aborted?'資料連線逾時':`更新失敗：${err.message}`;}
-  finally{clearTimeout(timeout);if(run===generation){loading=false;render();timer=setTimeout(refresh,pollSeconds*1000);}}
+  finally{clearTimeout(timeout);if(run===generation){loading=false;if(firstLoad)lastRotation=Date.now();render();timer=setTimeout(refresh,pollSeconds*1000);}}
 }
 function selectSource(value){
   if(value===source||!Object.hasOwn(BOARDS,value))return;generation++;request?.abort();clearTimeout(timer);source=value;snapshot=null;problem=null;origin='';loading=false;page=0;cacheWarning='';lastRotation=Date.now();
   history.replaceState(null,'',`#${source}`);savePreferences();restore();void refresh();
 }
 function turn(delta){const pages=Math.max(1,Math.ceil(filtered().length/metrics().capacity));page=(page+delta+pages)%pages;lastRotation=Date.now();render();}
+function advance(){
+  const next=nextRotation(source,page,Math.ceil(filtered().length/metrics().capacity),cycleBoards);
+  if(next.source!==source)selectSource(next.source);
+  else{page=next.page;lastRotation=Date.now();render();}
+}
+function filtersChanged(){page=0;lastRotation=Date.now();savePreferences();render();}
+function toggleRotation(){rotating=!rotating;lastRotation=Date.now();renderRotation();savePreferences();render();}
 document.querySelectorAll('[data-source]').forEach(button=>button.addEventListener('click',()=>selectSource(button.dataset.source)));
 window.addEventListener('hashchange',()=>selectSource(location.hash.slice(1)));
-$('refresh').addEventListener('click',refresh);for(const id of ['search','filter'])$(id).addEventListener('input',()=>{page=0;lastRotation=Date.now();savePreferences();render();});
+$('refresh').addEventListener('click',refresh);for(const id of ['search','filter'])$(id).addEventListener('input',filtersChanged);
+$('clear-filters').addEventListener('click',()=>{$('search').value='';$('filter').value='all';filtersChanged();$('search').focus();});
 $('previous').addEventListener('click',()=>turn(-1));$('next').addEventListener('click',()=>turn(1));
-$('rotate').addEventListener('click',()=>{rotating=!rotating;lastRotation=Date.now();renderRotation();savePreferences();render();});
+$('rotate').addEventListener('click',toggleRotation);
+$('cycle').addEventListener('click',()=>{cycleBoards=!cycleBoards;lastRotation=Date.now();renderRotation();savePreferences();});
+document.addEventListener('keydown',event=>{
+  if(event.defaultPrevented||event.repeat||event.isComposing||event.altKey||event.ctrlKey||event.metaKey||event.shiftKey)return;
+  if(event.target.closest('input,select,textarea,[contenteditable]'))return;
+  if(event.key===' '&&event.target.closest('button,a,summary')&&!document.fullscreenElement)return;
+  const selected={'1':'int','2':'int-arr','3':'dom','4':'dom-arr'}[event.key];
+  if(selected){event.preventDefault();selectSource(selected);}
+  else if(event.key==='ArrowLeft'||event.key==='ArrowRight'){event.preventDefault();turn(event.key==='ArrowLeft'?-1:1);}
+  else if(event.key===' '){event.preventDefault();toggleRotation();}
+});
 let shareTimer;
 $('share').addEventListener('click',async()=>{
   const url=new URL(location.href);url.hash=source;
@@ -124,5 +144,5 @@ $('share').addEventListener('click',async()=>{
 $('fullscreen').addEventListener('click',async()=>{try{if(document.fullscreenElement)await document.exitFullscreen();else await document.documentElement.requestFullscreen();}catch{cacheWarning='全螢幕無法啟動，可使用 F11';renderStatus();}});
 document.addEventListener('fullscreenchange',render);window.addEventListener('resize',render);window.addEventListener('online',refresh);window.addEventListener('offline',()=>{problem='瀏覽器已離線';renderStatus();});
 document.addEventListener('visibilitychange',()=>{if(!document.hidden){lastRotation=Date.now();refresh();}});
-function tick(){const now=new Date();$('clock').textContent=clockFormat.format(now);$('date').textContent=new Intl.DateTimeFormat('zh-TW',{timeZone:'Asia/Taipei',month:'2-digit',day:'2-digit'}).format(now)+' UTC+8';renderStatus();if(rotating&&!document.hidden&&!['INPUT','SELECT'].includes(document.activeElement.tagName)&&Date.now()-lastRotation>=18000)turn(1);}
+function tick(){const now=new Date();$('clock').textContent=clockFormat.format(now);$('date').textContent=new Intl.DateTimeFormat('zh-TW',{timeZone:'Asia/Taipei',month:'2-digit',day:'2-digit'}).format(now)+' UTC+8';renderStatus();if(rotating&&!loading&&!document.hidden&&!['INPUT','SELECT'].includes(document.activeElement.tagName)&&Date.now()-lastRotation>=18000)advance();}
 savePreferences();restore();void refresh();tick();setInterval(tick,1000);
