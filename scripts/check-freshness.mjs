@@ -15,7 +15,8 @@ export async function checkFreshness({ base, now = Date.now, fetcher = fetch, ma
       if (!validSnapshot(snapshot, source, checkedAt)) throw new Error('無效快照');
       const ageSeconds = Math.max(0, Math.floor((checkedAt - Date.parse(snapshot.lastSuccess)) / 1000));
       const ok = ageSeconds <= maxAgeSeconds && !snapshot.stale && !snapshot.error;
-      return { source, ok, lastSuccess: snapshot.lastSuccess, ageSeconds, error: ok ? null : snapshot.error || (snapshot.stale ? '仍在使用備援快照' : '資料已超過更新期限') };
+      const reason = snapshot.stale ? '仍在使用備援快照' : '資料已超過更新期限';
+      return { source, ok, lastSuccess: snapshot.lastSuccess, ageSeconds, error: ok ? null : snapshot.error || reason };
     } catch (error) {
       return { source, ok: false, error: error.message };
     }

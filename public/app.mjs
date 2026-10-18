@@ -107,7 +107,7 @@ async function refresh(){
 }
 function selectSource(value){
   if(value===source||!Object.hasOwn(BOARDS,value))return;generation++;request?.abort();clearTimeout(timer);source=value;snapshot=null;problem=null;origin='';loading=false;page=0;cacheWarning='';lastRotation=Date.now();
-  history.replaceState(null,'',`#${source}`);savePreferences();restore();refresh();
+  history.replaceState(null,'',`#${source}`);savePreferences();restore();void refresh();
 }
 function turn(delta){const pages=Math.max(1,Math.ceil(filtered().length/metrics().capacity));page=(page+delta+pages)%pages;lastRotation=Date.now();render();}
 document.querySelectorAll('[data-source]').forEach(button=>button.addEventListener('click',()=>selectSource(button.dataset.source)));
@@ -125,4 +125,4 @@ $('fullscreen').addEventListener('click',async()=>{try{if(document.fullscreenEle
 document.addEventListener('fullscreenchange',render);window.addEventListener('resize',render);window.addEventListener('online',refresh);window.addEventListener('offline',()=>{problem='瀏覽器已離線';renderStatus();});
 document.addEventListener('visibilitychange',()=>{if(!document.hidden){lastRotation=Date.now();refresh();}});
 function tick(){const now=new Date();$('clock').textContent=clockFormat.format(now);$('date').textContent=new Intl.DateTimeFormat('zh-TW',{timeZone:'Asia/Taipei',month:'2-digit',day:'2-digit'}).format(now)+' UTC+8';renderStatus();if(rotating&&!document.hidden&&!['INPUT','SELECT'].includes(document.activeElement.tagName)&&Date.now()-lastRotation>=18000)turn(1);}
-savePreferences();restore();refresh();tick();setInterval(tick,1000);
+savePreferences();restore();void refresh();tick();setInterval(tick,1000);
