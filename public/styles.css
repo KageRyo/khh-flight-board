@@ -11,7 +11,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
 .shell{height:100dvh;min-height:560px;padding:14px 22px;display:flex;flex-direction:column;gap:10px}
 .controls{display:flex;align-items:center;gap:22px;font-size:13px;min-height:38px}
 .app-name{text-decoration:none;font-weight:800;letter-spacing:1px;white-space:nowrap}.app-name span{font-size:9px;color:#938b9e}
-.tabs{display:flex;gap:3px}.tabs button{background:transparent;border-color:transparent;color:#a79db9}.tabs .selected{color:#fff;border-color:#777087;background:#383143}
+.tabs{display:flex;gap:3px}.tabs button{background:transparent;border-color:transparent;color:#a79db9}.tabs .selected,#cycle[aria-pressed="true"]{color:#fff;border-color:#777087;background:#383143}
 .tools{display:flex;gap:5px;align-items:center;margin-left:auto}.tools input{width:180px;background:#211d2a;border:1px solid #484051;border-radius:3px;padding:7px 9px;color:#fff}
 .tools select{padding:6px;background:#211d2a;color:#d1c7df;border:1px solid #484051;border-radius:3px}
 .fids{--header:var(--green);display:flex;flex-direction:column;flex:1;min-height:0;background:#1d1b31;border:5px solid #08090c;box-shadow:0 0 0 1px #37333f;overflow:hidden}
@@ -64,6 +64,6 @@ details{position:relative;white-space:nowrap}summary{cursor:pointer}details[open
   .flight-table .airline-col,.single .flight-table .airline-col{width:18%}.flight-table .number-col,.single .flight-table .number-col{width:14%}.flight-table .place-col,.single .flight-table .place-col{width:21%}
   .flight-table .scheduled-col,.single .flight-table .scheduled-col{width:10%}.flight-table .gate-col,.single .flight-table .gate-col{width:6%}.flight-table .status-col{width:31%}.single .flight-table .status-col{width:22%}.single .flight-table .updated-col{width:9%}
   .airline-badge{font-size:.65em}.airline-badge img{width:25%}.single .airline-badge{font-size:.65em}.single .airline-word{flex-direction:column;align-items:flex-start;gap:0}
-  .statusbar{font-size:9px;gap:5px}.statusbar>p{gap:5px}.statusbar button{padding:2px 5px;font-size:9px}footer{flex-wrap:wrap;gap:4px;font-size:9px}.announcement{font-size:11px}#poll-label{display:block;margin:2px 0}
+  .statusbar{font-size:9px;gap:5px;flex-wrap:wrap}.statusbar>div{margin-left:auto}.statusbar>p{gap:5px}.statusbar button{padding:2px 5px;font-size:9px}footer{flex-wrap:wrap;gap:4px;font-size:9px}.announcement{font-size:11px}#poll-label{display:block;margin:2px 0}
   .flight-table .place{font-size:.88em}.flight-status{font-size:.69em}.single .flight-status{font-size:.67em}
 }
