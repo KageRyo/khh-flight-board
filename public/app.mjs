@@ -10,11 +10,14 @@ let source = [location.hash.slice(1),preferences.source,'int'].find(value=>typeo
 let snapshot = null, problem = null, origin = '', loading = false, cacheWarning = '';
 let page = 0, rotating = typeof preferences.rotating==='boolean'?preferences.rotating:true, pollSeconds = 60, timer, request, generation = 0, lastRotation = Date.now(), renderedKey = '';
 let cycleBoards = preferences.cycleBoards === true;
+let marqueeMotion = ['on','off'].includes(preferences.marqueeMotion)?preferences.marqueeMotion:'system';
+$('marquee-motion').value=marqueeMotion;
+marquee.setMotion(marqueeMotion);
 $('search').value=typeof preferences.query==='string'?preferences.query:'';
 $('filter').value=preferences.filter==='active'?'active':'all';
-function renderRotation(){ $('rotate').setAttribute('aria-pressed',String(rotating));$('rotate').textContent=rotating?'Ⅱ 暫停輪播':'▶ 開始輪播';$('cycle').setAttribute('aria-pressed',String(cycleBoards));marquee.setPaused(!rotating); }
+function renderRotation(){ $('rotate').setAttribute('aria-pressed',String(rotating));$('rotate').textContent=rotating?'Ⅱ 暫停輪播':'▶ 開始輪播';$('cycle').setAttribute('aria-pressed',String(cycleBoards)); }
 function savePreferences(){
-  try { localStorage.setItem('khh-preferences',JSON.stringify({source,query:$('search').value,filter:$('filter').value,rotating,cycleBoards})); } catch { /* 設定無法儲存時仍可操作看板。 */ }
+  try { localStorage.setItem('khh-preferences',JSON.stringify({source,query:$('search').value,filter:$('filter').value,rotating,cycleBoards,marqueeMotion})); } catch { /* 設定無法儲存時仍可操作看板。 */ }
 }
 renderRotation();
 const dateFormat = new Intl.DateTimeFormat('zh-TW',{timeZone:'Asia/Taipei',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false});
@@ -129,6 +132,7 @@ $('refresh').addEventListener('click',refresh);for(const id of ['search','filter
 $('clear-filters').addEventListener('click',()=>{$('search').value='';$('filter').value='all';filtersChanged();$('search').focus();});
 $('previous').addEventListener('click',()=>turn(-1));$('next').addEventListener('click',()=>turn(1));
 $('rotate').addEventListener('click',toggleRotation);
+$('marquee-motion').addEventListener('change',()=>{marqueeMotion=$('marquee-motion').value;marquee.setMotion(marqueeMotion);savePreferences();});
 $('cycle').addEventListener('click',()=>{cycleBoards=!cycleBoards;lastRotation=Date.now();renderRotation();savePreferences();});
 document.addEventListener('keydown',event=>{
   if(event.defaultPrevented||event.repeat||event.isComposing||event.altKey||event.ctrlKey||event.metaKey||event.shiftKey)return;

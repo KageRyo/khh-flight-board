@@ -18,6 +18,12 @@ const feeds = Object.fromEntries(Object.keys(SOURCES).map(source => [source, cre
 })]));
 const files = {
   '/': ['index.html', 'text/html; charset=utf-8'],
+  '/index.html': ['index.html', 'text/html; charset=utf-8'],
+  '/gate.html': ['gate.html', 'text/html; charset=utf-8'],
+  '/counter.html': ['counter.html', 'text/html; charset=utf-8'],
+  '/display.mjs': ['display.mjs', 'text/javascript; charset=utf-8'],
+  '/display-model.mjs': ['display-model.mjs', 'text/javascript; charset=utf-8'],
+  '/display.css': ['display.css', 'text/css; charset=utf-8'],
   '/app.mjs': ['app.mjs', 'text/javascript; charset=utf-8'],
   '/model.mjs': ['model.mjs', 'text/javascript; charset=utf-8'],
   '/config.mjs': ['config.mjs', 'text/javascript; charset=utf-8'],

@@ -19,7 +19,7 @@
 }
 .notice-group > span {
   flex: none;
-  padding-inline-end: 4em;
+  padding-inline-end: clamp(140px, 10vw, 380px);
 }
 .passenger-marquee:hover .notice-track {
   animation-play-state: paused;
@@ -29,16 +29,20 @@
   outline-offset: -1px;
 }
 .passenger-marquee.notice-paused,
+.passenger-marquee.notice-motion-disabled,
 .passenger-marquee:focus-within {
   overflow-x: auto;
 }
 .notice-paused .notice-track,
+.notice-motion-disabled .notice-track,
 .passenger-marquee:focus-within .notice-track {
   animation: none;
 }
 .notice-paused .notice-duplicate,
+.notice-motion-disabled .notice-duplicate,
 .passenger-marquee:focus-within .notice-duplicate,
 .notice-paused .notice-group > [aria-hidden],
+.notice-motion-disabled .notice-group > [aria-hidden],
 .passenger-marquee:focus-within .notice-group > [aria-hidden] {
   display: none;
 }
@@ -47,9 +51,9 @@
   to { transform: translateX(-50%); }
 }
 @media (prefers-reduced-motion: reduce) {
-  .announcement .passenger-marquee,
-  .passenger-marquee { overflow-x: auto; }
-  .notice-track { animation: none; }
-  .notice-duplicate,
-  .notice-group > [aria-hidden] { display: none; }
+  .announcement .passenger-marquee:not(.notice-motion-enabled),
+  .passenger-marquee:not(.notice-motion-enabled) { overflow-x: auto; }
+  .passenger-marquee:not(.notice-motion-enabled) .notice-track { animation: none; }
+  .passenger-marquee:not(.notice-motion-enabled) .notice-duplicate,
+  .passenger-marquee:not(.notice-motion-enabled) .notice-group > [aria-hidden] { display: none; }
 }
