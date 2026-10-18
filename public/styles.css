@@ -1,7 +1,7 @@
 :root {
-  color-scheme:dark; font-family:"Arial Narrow","Bahnschrift Condensed","Microsoft JhengHei",sans-serif;
-  background:#111015; color:#ede8ff; font-synthesis:none;
-  --green:#008143; --blue:#1919ee; --row-height:clamp(34px,4.4vh,110px); --row-font:clamp(14px,min(1.35vw,3.2vh),54px);
+  color-scheme:dark; font-family:Arial,"Microsoft JhengHei",sans-serif;
+  background:#10121b; color:#f1f3ff; font-synthesis:weight;
+  --green:#216b29; --blue:#173aa9; --row-height:clamp(34px,4.4vh,110px); --row-font:clamp(14px,min(1.35vw,3.2vh),54px);
 }
 *{box-sizing:border-box} body{margin:0} button,input,select{font:inherit}
 button,select,summary{cursor:pointer} button{color:#cbc5dc;background:#24202e;border:1px solid #4a435a;border-radius:3px;padding:.45em .7em}
@@ -14,38 +14,36 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
 .tabs{display:flex;gap:3px}.tabs button{background:transparent;border-color:transparent;color:#a79db9}.tabs .selected,#cycle[aria-pressed="true"]{color:#fff;border-color:#777087;background:#383143}
 .tools{display:flex;gap:5px;align-items:center;margin-left:auto}.tools input{width:180px;background:#211d2a;border:1px solid #484051;border-radius:3px;padding:7px 9px;color:#fff}
 .tools select{padding:6px;background:#211d2a;color:#d1c7df;border:1px solid #484051;border-radius:3px}
-.fids{--header:var(--green);display:flex;flex-direction:column;flex:1;min-height:0;background:#1d1b31;border:5px solid #08090c;box-shadow:0 0 0 1px #37333f;overflow:hidden}
-.fids.arrival{--header:var(--blue)}
-.board-title{position:relative;display:flex;align-items:center;justify-content:space-between;min-height:8vh;padding:0 1.5%;isolation:isolate;background:#111316}
-.board-title::before{content:"";position:absolute;top:0;left:12%;width:76%;height:88%;border-radius:0 0 50% 50% / 0 0 100% 100%;background:var(--header);z-index:-1}
+.fids{--header:var(--green);--header-top:#4c903d;display:flex;flex-direction:column;flex:1;min-height:0;background:#171b32;border:5px solid #08090c;box-shadow:0 0 0 1px #37333f;overflow:hidden}
+.fids.arrival{--header:var(--blue);--header-top:#3c5dce}
+.board-title{position:relative;display:flex;align-items:center;justify-content:space-between;min-height:8vh;padding:0 1.5%;isolation:isolate;background:#0d111e}
+.board-title::before{content:"";position:absolute;top:0;left:12%;width:76%;height:88%;border-radius:0 0 50% 50% / 0 0 100% 100%;background:linear-gradient(180deg,var(--header-top),var(--header) 65%);z-index:-1}
 .board-title time{font-size:clamp(24px,3vw,120px);font-weight:750;letter-spacing:-.055em;font-variant-numeric:tabular-nums;line-height:1}
 .board-title h1{position:absolute;left:15%;width:70%;top:15%;text-align:center;font-size:clamp(22px,2.55vw,100px);font-weight:800;white-space:nowrap;line-height:1.05;letter-spacing:-.03em}
-.airport-brand{display:flex;flex-direction:column;align-items:center;font-style:italic;font-size:clamp(12px,1vw,40px);line-height:.8;transform:rotate(-9deg);padding-right:.5em}
-.brand-strokes{font-family:Arial,sans-serif;font-size:2.5em;font-weight:bold;letter-spacing:-.26em;padding-right:.2em;color:#ffce64;text-shadow:-.15em .07em #d24b8c,-.3em .14em #6352bd}
-.airport-brand strong{margin-top:.4em;letter-spacing:.05em}
+.airport-brand{display:block;width:clamp(68px,6.5vw,260px);height:clamp(40px,6vh,144px);object-fit:contain}
 .board{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.65vw;min-height:0;flex:1;align-items:start;overflow:hidden}
 .board.single{grid-template-columns:minmax(0,1fr)}
-.flight-table{width:100%;table-layout:fixed;border-collapse:collapse;font-size:var(--row-font);font-weight:650;text-align:center}
-.flight-table th{height:6vh;padding:0 .1em;background:#191723;color:#eee1ff;line-height:1.12;vertical-align:middle;font-size:.67em;font-weight:650}
+.flight-table{width:100%;table-layout:fixed;border-collapse:collapse;font-size:var(--row-font);font-weight:700;text-align:center}
+.flight-table th{height:6vh;padding:0 .1em;background:#14172b;color:#f0f1ff;line-height:1.12;vertical-align:middle;font-size:.67em;font-weight:650}
 .flight-table th span{display:block;font-size:.93em;font-weight:500}
 .flight-table td{height:var(--row-height);max-height:var(--row-height);padding:0 .12em;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;line-height:1.02;font-variant-numeric:tabular-nums;border:0}
-.flight-table tbody tr:nth-child(odd){background:#403955}.flight-table tbody tr:nth-child(even){background:#242431}
+.flight-table tbody tr:nth-child(odd){background:#30344f}.flight-table tbody tr:nth-child(even){background:#15192d}
 .flight-table .airline-col{width:18%}.flight-table .number-col{width:13%}.flight-table .place-col{width:22%}.flight-table .scheduled-col{width:9%}.flight-table .gate-col{width:6%}.flight-table .status-col{width:32%}
-.flight-number{letter-spacing:-.04em;font-size:.86em}.place{color:#f7e5b4;text-align:left;font-size:.79em;letter-spacing:-.055em}.place small{margin-left:.15em;font-size:.83em;color:inherit}
-.gate{color:#bcbaff}.scheduled{letter-spacing:-.065em}.airline-cell{padding:0!important}
-.airline-badge{display:flex;align-items:center;justify-content:flex-start;width:100%;height:calc(var(--row-height) * .78);background:#efeff6;color:#191840;overflow:hidden;padding:0 .15em;gap:.1em;font-size:.58em}
+.flight-number{letter-spacing:-.04em;font-size:.86em}.place{color:#f0efb5;text-align:left;font-size:.79em;letter-spacing:-.055em}.place small{margin-left:.15em;font-size:.83em;color:inherit}
+.gate{color:#f4f7ff}.gate-badge{display:inline-block;padding:.02em .17em;border-radius:.28em;background:#397849;line-height:1.05}.scheduled{letter-spacing:-.065em}.airline-cell{padding:0!important}
+.airline-badge{display:flex;align-items:center;justify-content:flex-start;width:100%;height:calc(var(--row-height) * .78);background:#efeff6;color:#171a38;overflow:hidden;padding:0 .15em;gap:.1em;font-size:.75em}
 .airline-badge img{width:29%;height:100%;object-fit:contain;flex-shrink:0}.airline-badge .airline-word{display:flex;flex-direction:column;min-width:0;text-align:left}
-.airline-badge b{overflow:hidden;text-overflow:ellipsis;font-size:1.02em;letter-spacing:-.06em}.airline-badge small{font:italic .7em Arial,sans-serif;letter-spacing:.04em;line-height:1.2}
+.airline-badge b{overflow:hidden;text-overflow:ellipsis;font-size:1.02em;letter-spacing:-.025em}.airline-badge small{font:700 .48em Arial,sans-serif;letter-spacing:.04em;line-height:1.2}
 .airline-badge.tiger{background:#f6ad23;color:#151114}.airline-badge.peach{background:#ad197e;color:#fff}.airline-badge.vietjet{background:#be293d;color:#fff}.airline-badge.airasia{background:#b51b38;color:#fff}
-.flight-status{font-size:.67em;text-align:left;letter-spacing:-.025em}.status-main{display:block;overflow:hidden;text-overflow:ellipsis;color:#f2eaff}.status-english{margin-left:.2em;font-size:.86em;font-weight:500}
-.status-extra{display:block;font-size:.66em;margin-top:.17em;color:#c6bbde}.status-boarding .status-main{color:#64f43a}.status-arrived .status-main,.status-departed .status-main{color:#19bbff}
-.status-delayed .status-main{color:#ff6aa9}.status-cancelled .status-main{color:#ff656c}.status-final .status-main{color:#ffd85b}
+.flight-status{font-size:.67em;text-align:left;letter-spacing:-.025em}.status-main{display:block;overflow:hidden;text-overflow:ellipsis;color:#f1f3ff}.status-english{margin-left:.2em;font-size:.86em;font-weight:500}
+.status-extra{display:block;font-size:.66em;margin-top:.17em;color:#c1c8df}.status-boarding .status-main{color:#8af24e}.status-arrived .status-main,.status-departed .status-main{color:#84e6bc}
+.status-delayed .status-main{color:#f38ebd}.status-cancelled .status-main{color:#ff656c}.status-final .status-main{color:#ffd85b}
 .single .flight-table{font-size:clamp(18px,min(2.35vw,3.7vh),94px)}.single .flight-table th{font-size:.56em}
 .single .flight-table .airline-col{width:18%}.single .flight-table .number-col{width:14%}.single .flight-table .place-col{width:19%}.single .flight-table .scheduled-col{width:9%}.single .flight-table .updated-col{width:9%}.single .flight-table .gate-col{width:6%}.single .flight-table .status-col{width:25%}
-.single .airline-badge{background:transparent;color:#eee4ff;font-size:.73em;gap:.2em}.single .airline-badge img{width:22%;object-fit:contain}.single .airline-word{flex-direction:row;align-items:baseline;gap:.15em}
+.single .airline-badge{background:transparent;color:#f0f2ff;font-size:.73em;gap:.2em}.single .airline-badge img{width:22%;object-fit:contain}.single .airline-word{flex-direction:row;align-items:baseline;gap:.15em}
 .single .airline-badge small{font-size:.9em}.single .flight-status{font-size:.57em}.single .place{font-size:.8em}.single .flight-number{font-size:.85em}
-.announcement{display:flex;justify-content:space-between;align-items:center;gap:1em;background:#39304e;min-height:4vh;padding:0 1%;font-size:clamp(12px,1.15vw,46px);font-weight:700;color:#eed3ff;white-space:nowrap;overflow:hidden}
-.announcement p{overflow:hidden;text-overflow:ellipsis}.announcement #page{font-variant-numeric:tabular-nums;font-size:.65em;flex-shrink:0}
+.announcement{display:flex;justify-content:space-between;align-items:center;gap:1em;background:#292e4c;min-height:4vh;padding:0 1%;font-size:clamp(12px,1.15vw,46px);font-weight:700;color:#f0f1ff;white-space:nowrap;overflow:hidden}
+.announcement p{overflow:hidden;text-overflow:ellipsis}.statusbar #page{font-variant-numeric:tabular-nums;white-space:nowrap;align-self:center}
 .notice{font-family:"Segoe UI","Microsoft JhengHei",sans-serif;padding:6px 12px;background:#4e3f21;color:#ffe2a1;font-size:clamp(11px,.75vw,30px);line-height:1.4}
 .empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1em;text-align:center;min-height:200px}.empty h2{font-size:clamp(18px,2vw,70px)}.empty p{font-size:clamp(12px,1vw,40px);color:#b7accb}
 .statusbar,footer{font-family:"Segoe UI","Microsoft JhengHei",sans-serif;display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:11px;color:#a69bae}
@@ -59,7 +57,7 @@ details{position:relative;white-space:nowrap}summary{cursor:pointer}details[open
 @media(max-width:999px){.board{grid-template-columns:minmax(0,1fr)}.flight-table{font-size:clamp(15px,2.8vw,28px)}.single .flight-table{font-size:clamp(16px,3vw,30px)}.board-title h1{font-size:4vw}.board-title time{font-size:4.7vw}.board-title::before{left:15%;width:70%}.flight-table th{height:5vh}.controls{flex-wrap:wrap}.tools{margin-left:auto}.tools select{max-width:110px}#date{display:none}}
 @media(max-width:600px){
   .shell{padding:6px;gap:6px;min-height:680px}.controls{gap:6px}.app-name{display:none}.tabs{width:100%;justify-content:space-between}.tabs button{flex:1;padding:7px 5px}
-  .tools{width:100%}.tools input{flex:1;min-width:0;width:100px}.tools select{max-width:110px}.board-title h1{font-size:4.7vw;top:25%;left:17%;width:66%}.board-title time{font-size:5.5vw}.board-title{min-height:7vh}.airport-brand{font-size:9px}
+  .tools{width:100%}.tools input{flex:1;min-width:0;width:100px}.tools select{max-width:110px}.board-title h1{font-size:4.7vw;top:25%;left:17%;width:66%}.board-title time{font-size:5.5vw}.board-title{min-height:7vh}.airport-brand{width:48px;height:34px}
   .flight-table,.single .flight-table{font-size:clamp(12px,3.2vw,20px)}.flight-table th,.single .flight-table th{font-size:.72em}
   .flight-table .airline-col,.single .flight-table .airline-col{width:18%}.flight-table .number-col,.single .flight-table .number-col{width:14%}.flight-table .place-col,.single .flight-table .place-col{width:21%}
   .flight-table .scheduled-col,.single .flight-table .scheduled-col{width:10%}.flight-table .gate-col,.single .flight-table .gate-col{width:6%}.flight-table .status-col{width:31%}.single .flight-table .status-col{width:22%}.single .flight-table .updated-col{width:9%}

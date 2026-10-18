@@ -23,6 +23,10 @@ const files = {
   '/config.mjs': ['config.mjs', 'text/javascript; charset=utf-8'],
   '/styles.css': ['styles.css', 'text/css; charset=utf-8'],
   '/favicon.svg': ['favicon.svg', 'image/svg+xml'],
+  '/khh-mark.svg': ['khh-mark.svg', 'image/svg+xml'],
+  '/marquee.mjs': ['marquee.mjs', 'text/javascript; charset=utf-8'],
+  '/marquee.css': ['marquee.css', 'text/css; charset=utf-8'],
+  '/notices.json': ['notices.json', 'application/json; charset=utf-8'],
   '/social-preview.png': ['social-preview.png', 'image/png']
 };
 const server = createServer(async (req, res) => {

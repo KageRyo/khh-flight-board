@@ -10,6 +10,6 @@
     "test": "node --test",
     "build:pages": "node scripts/build-pages.mjs",
     "check:freshness": "node scripts/check-freshness.mjs",
-    "check": "node --check server.mjs && node --check lib/feed.mjs && node --check public/model.mjs && node --check public/config.mjs && node --check public/app.mjs && node --check scripts/build-pages.mjs && node --check scripts/check-freshness.mjs"
+    "check": "node --check server.mjs && node --check lib/feed.mjs && node --check public/model.mjs && node --check public/config.mjs && node --check public/app.mjs && node --check scripts/build-pages.mjs && node --check scripts/check-freshness.mjs && node --check public/marquee.mjs"
   }
 }

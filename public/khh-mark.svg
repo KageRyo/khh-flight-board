@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 180">
+  <title>KHH 看板飛機圖樣</title>
+  <defs>
+    <linearGradient id="fuselage" x1="35" y1="132" x2="267" y2="23" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#316ed1"/>
+      <stop offset=".22" stop-color="#ad217e"/>
+      <stop offset=".43" stop-color="#d42b8b"/>
+      <stop offset=".57" stop-color="#e7c8a3"/>
+      <stop offset=".78" stop-color="#ead15b"/>
+      <stop offset="1" stop-color="#e3d34d"/>
+    </linearGradient>
+  </defs>
+  <path d="M15 108Q28 100 44 105L88 119C135 91 213 24 263 13L281 20C273 42 257 55 234 69L112 140Q88 151 49 155L59 141Z" fill="url(#fuselage)" stroke="#c5def3" stroke-width="4" stroke-linejoin="round"/>
+  <path d="M22 108L88 128C143 100 219 35 269 20" fill="none" stroke="#f6eff1" stroke-width="4" opacity=".35"/>
+  <path d="M88 119L112 140L155 117L145 91Z" fill="#c32986" opacity=".6"/>
+  <text x="166" y="163" fill="#f3f5ff" font-family="Arial,sans-serif" font-style="italic" font-weight="900" font-size="43" letter-spacing="3">KHH</text>
+</svg>
