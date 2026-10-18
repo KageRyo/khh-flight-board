@@ -62,3 +62,15 @@ test('磁碟快取可在重新啟動且斷線時復原', async () => {
     assert.equal(result.flights[0].number, 'ZZ123');
   } finally { await rm(dir, { recursive: true, force: true }); }
 });
+test('四個資料源各讀取正確官方端點與入境欄位', async () => {
+  for (const [source,suffix] of [['int','INTDEP'],['dom','DOMDEP'],['int-arr','INTARR'],['dom-arr','DOMARR']]) {
+    let seen;
+    const data = source.endsWith('-arr') ? [{ ...rows[0], goalAirportName:undefined, upAirportName:'澎湖', upAirportCode:'MZG',airFlyStatus:'抵達' }] : rows;
+    const feed = lib.createFeed({source,fetcher:async url => { seen=url; return new Response(JSON.stringify(data)); }});
+    const result = await feed.get();
+    assert.equal(seen,`https://www.kia.gov.tw/Announce/NewsArea/InstantSchedule_${suffix}.json`);
+    assert.equal(result.stale,false);
+    assert.equal(result.source,source);
+    assert.equal(result.flights[0].destination,source.endsWith('-arr')?'澎湖':'測試目的地');
+  }
+});

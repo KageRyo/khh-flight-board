@@ -2,7 +2,7 @@ import { createServer } from 'node:http';
 import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { join } from 'node:path';
-import { createFeed } from './lib/feed.mjs';
+import { createFeed, SOURCES } from './lib/feed.mjs';
 
 const root = fileURLToPath(new URL('.', import.meta.url));
 function numeric(name, fallback, min, max) {
@@ -13,13 +13,14 @@ function numeric(name, fallback, min, max) {
 const port = numeric('PORT', 3000, 1, 65535);
 const pollSeconds = numeric('POLL_SECONDS', 60, 30, 3600);
 const timeoutMs = numeric('UPSTREAM_TIMEOUT_SECONDS', 12, 2, 25) * 1000;
-const feeds = Object.fromEntries(['int', 'dom'].map(source => [source, createFeed({
+const feeds = Object.fromEntries(Object.keys(SOURCES).map(source => [source, createFeed({
   source, intervalMs: pollSeconds * 1000, timeoutMs, cacheFile: join(root, '.cache', `${source}.json`)
 })]));
 const files = {
   '/': ['index.html', 'text/html; charset=utf-8'],
   '/app.mjs': ['app.mjs', 'text/javascript; charset=utf-8'],
   '/model.mjs': ['model.mjs', 'text/javascript; charset=utf-8'],
+  '/config.mjs': ['config.mjs', 'text/javascript; charset=utf-8'],
   '/styles.css': ['styles.css', 'text/css; charset=utf-8'],
   '/favicon.svg': ['favicon.svg', 'image/svg+xml']
 };

@@ -51,3 +51,13 @@ test('瀏覽器快取驗證拒絕未來或無效成功時間與損壞航班', ()
   assert.equal(model.validSnapshot(snapshot, 'dom'), false);
   assert.equal(model.validSnapshot({ ...snapshot, flights: [{}] }, 'int'), false);
 });
+test('入境使用出發地 upAirport，不誤認為目的地；抵達時間標實際', () => {
+  const arrival = { ...row, upAirportName:'曼谷/廊曼', upAirportCode:'DMK', airFlyStatus:'抵達' };
+  delete arrival.goalAirportName; delete arrival.goalAirportCode;
+  const [flight] = model.normalizeFlights([arrival], 'int-arr');
+  assert.equal(flight.destination, '曼谷/廊曼');
+  assert.equal(flight.airport, 'DMK');
+  assert.equal(flight.timeLabel, '實際');
+  assert.equal(flight.tone, 'arrived');
+  assert.throws(() => model.normalizeFlights([row], 'int-arr'));
+});

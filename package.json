@@ -1,13 +1,14 @@
 {
   "name": "khh-flight-board",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "type": "module",
-  "description": "高雄小港機場離站航班彩色卡片看板",
+  "description": "高雄小港機場國際與國內入出境現場風格航班看板",
   "engines": { "node": ">=22.19" },
   "scripts": {
     "start": "node --env-file-if-exists=.env server.mjs",
     "test": "node --test",
-    "check": "node --check server.mjs && node --check lib/feed.mjs && node --check public/model.mjs && node --check public/app.mjs"
+    "build:pages": "node scripts/build-pages.mjs",
+    "check": "node --check server.mjs && node --check lib/feed.mjs && node --check public/model.mjs && node --check public/config.mjs && node --check public/app.mjs && node --check scripts/build-pages.mjs"
   }
 }
