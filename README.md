@@ -12,7 +12,7 @@
 
 ## 線上版：GitHub Pages
 
-直接開啟 **https://kageryo.github.io/khh-flight-board/**，不需安裝。四種看板也有直接連結：
+直接開啟 [線上看板](https://kageryo.github.io/khh-flight-board/)，不需安裝。四種看板也有直接連結：
 
 - [國際出境](https://kageryo.github.io/khh-flight-board/#int)
 - [國際入境](https://kageryo.github.io/khh-flight-board/#int-arr)
@@ -35,7 +35,7 @@ cd khh-flight-board
 npm start
 ```
 
-開啟 **http://127.0.0.1:3000**，維持終端機開啟，`Ctrl+C` 停止。Windows 可雙擊 `start-board.cmd`。不需要 API 金鑰、套件安裝或編譯。
+開啟 [本機看板](http://127.0.0.1:3000)，維持終端機開啟，`Ctrl+C` 停止。Windows 可雙擊 `start-board.cmd`。不需要 API 金鑰、套件安裝或編譯。
 
 本機版由同源 `/api/flights?source=int` 代理固定官方網址，解決 CORS。其他來源為 `int-arr`、`dom`、`dom-arr`。兩個並行請求不會重複抓取；更新按鈕也遵守設定間隔。未開啟看板時不會額外查詢官方資料。
 
