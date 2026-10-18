@@ -1,6 +1,7 @@
 import { cp, mkdir, readFile, writeFile } from 'node:fs/promises';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { resolve, join } from 'node:path';
+import { createHash } from 'node:crypto';
 import { BOARDS, sourceUrl } from '../public/config.mjs';
 import { normalizeFlights, validSnapshot } from '../public/model.mjs';
 
@@ -27,8 +28,17 @@ export async function buildPages({outDir,previousBase,fetcher=fetch,now=Date.now
     }
   }));
   await mkdir(outDir,{recursive:true});await cp(publicDir,outDir,{recursive:true});await mkdir(join(outDir,'data'),{recursive:true});
-  const html=await readFile(join(publicDir,'index.html'),'utf8');
-  await writeFile(join(outDir,'index.html'),html.replace('<html lang="zh-Hant">','<html lang="zh-Hant" data-mode="static">'));
+  const assets=['index.html','app.mjs','model.mjs','config.mjs','styles.css'];
+  const contents=await Promise.all(assets.map(name=>readFile(join(publicDir,name),'utf8')));
+  const version=createHash('sha256').update(contents.join('\n')).digest('hex').slice(0,12);
+  const html=contents[0].replace('<html lang="zh-Hant">','<html lang="zh-Hant" data-mode="static">')
+    .replace('./app.mjs',`./app.mjs?v=${version}`).replace('./styles.css',`./styles.css?v=${version}`);
+  await writeFile(join(outDir,'index.html'),html);
+  // 同一次發布的模組使用同一版本，避免 Pages CDN 混用舊標籤或程式碼。
+  for(const name of ['app.mjs','model.mjs','config.mjs']){
+    const original=contents[assets.indexOf(name)];
+    await writeFile(join(outDir,name),original.replace(/from '(\.\/[^']+\.mjs)'/g,`from '$1?v=${version}'`));
+  }
   await Promise.all(snapshots.map(value=>writeFile(join(outDir,'data',`${value.source}.json`),JSON.stringify(value))));
   await writeFile(join(outDir,'.nojekyll'),'');
   return snapshots.map(({source,flights,lastSuccess,stale})=>({source,count:flights.length,lastSuccess,stale}));

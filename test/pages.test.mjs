@@ -12,7 +12,10 @@ test('Pages 建置產生四種獨立快照、原始取得時間與子路徑資�
     await pages.buildPages({outDir,now:()=>Date.parse('2026-10-18T14:00Z'),fetcher:async url=>new Response(JSON.stringify([url.includes('ARR.json')?{...departure,goalAirportName:undefined,upAirportName:'來源城市',airFlyStatus:'抵達'}:departure]))});
     const data=JSON.parse(await readFile(join(outDir,'data/int-arr.json'),'utf8'));
     assert.equal(data.source,'int-arr');assert.equal(data.flights[0].destination,'來源城市');assert.equal(data.lastSuccess,'2026-10-18T14:00:00.000Z');
-    const html=await readFile(join(outDir,'index.html'),'utf8');assert.match(html,/data-mode="static"/);assert.match(html,/src="\.\/app.mjs"/);
+    const html=await readFile(join(outDir,'index.html'),'utf8');assert.match(html,/data-mode="static"/);
+    assert.match(html,/src="\.\/app\.mjs\?v=[a-f0-9]{12}"/);
+    assert.match(html,/href="\.\/styles\.css\?v=[a-f0-9]{12}"/);
+    const app=await readFile(join(outDir,'app.mjs'),'utf8');assert.match(app,/from '\.\/config\.mjs\?v=[a-f0-9]{12}'/);
   }finally{await rm(outDir,{recursive:true,force:true});}
 });
 test('官方故障時 Pages 保留上次成功時間並標示快取；沒有可用舊快照則拒絕發布',async()=>{
