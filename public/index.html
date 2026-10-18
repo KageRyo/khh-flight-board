@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#181624">
-  <meta name="description" content="依高雄小港機場現場看板照片重製的國際、國內入出境航班資訊。">
+  <meta name="description" content="依高雄小港機場現場看板照片重製的國際入出境、國內到離站航班資訊。">
   <title>KHH Flight Board · 高雄機場航班看板</title>
   <link rel="icon" href="./favicon.svg"><link rel="stylesheet" href="./styles.css">
   <script type="module" src="./app.mjs"></script>
@@ -13,7 +13,7 @@
     <nav class="controls" aria-label="看板設定">
       <a class="app-name" href="./">KHH <span>FLIGHT BOARD</span></a>
       <div class="tabs" role="group" aria-label="選擇航班看板">
-        <button data-source="int" class="selected" aria-pressed="true">國際出境</button><button data-source="int-arr" aria-pressed="false">國際入境</button><button data-source="dom" aria-pressed="false">國內出境</button><button data-source="dom-arr" aria-pressed="false">國內入境</button>
+        <button data-source="int" class="selected" aria-pressed="true">國際出境</button><button data-source="int-arr" aria-pressed="false">國際入境</button><button data-source="dom" aria-pressed="false">國內離站</button><button data-source="dom-arr" aria-pressed="false">國內到站</button>
       </div>
       <div class="tools"><input id="search" type="search" aria-label="搜尋航班、地點、航空公司" placeholder="搜尋航班 / 地點"><select id="filter" aria-label="篩選航班"><option value="all">全部航班</option><option value="active">未完成航班</option></select><button id="refresh" aria-label="更新航班">↻</button><button id="fullscreen" aria-label="進入全螢幕">⛶</button></div>
     </nav>

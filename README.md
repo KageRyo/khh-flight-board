@@ -2,7 +2,7 @@
 
 [開啟線上看板](https://kageryo.github.io/khh-flight-board/)
 
-依高雄小港機場現場照片重製的航班資訊看板：深色背景、紫灰交錯航班列、航空公司識別、綠色出境／藍色入境弧形標頭、左右雙欄國際線與單欄大字國內線。提供 **國際出境、國際入境、國內出境、國內入境** 四種模式。
+依高雄小港機場現場照片重製的航班資訊看板：深色背景、紫灰交錯航班列、航空公司識別、綠色出境／藍色入境弧形標頭、左右雙欄國際線與單欄大字國內線。提供 **國際出境、國際入境、國內離站、國內到站** 四種模式。
 
 ![國際出境雙欄看板](docs/preview.png)
 ![國際入境藍色標頭看板](docs/arrivals.png)
@@ -16,8 +16,8 @@
 
 - [國際出境](https://kageryo.github.io/khh-flight-board/#int)
 - [國際入境](https://kageryo.github.io/khh-flight-board/#int-arr)
-- [國內出境](https://kageryo.github.io/khh-flight-board/#dom)
-- [國內入境](https://kageryo.github.io/khh-flight-board/#dom-arr)
+- [國內離站](https://kageryo.github.io/khh-flight-board/#dom)
+- [國內到站](https://kageryo.github.io/khh-flight-board/#dom-arr)
 
 官方 JSON 目前沒有允許跨站讀取的 CORS 標頭，GitHub Pages 也無法執行 Node.js 代理。因此線上版由 GitHub Actions **約每 5 分鐘**抓取四組官方資料並發布靜態快照，頁面每 **60 秒**檢查網站上的新快照。排程與發布可能延遲；請以頁尾的實際取得時間判斷新鮮度，不是每 60 秒直接抓官方資料。
 
@@ -75,8 +75,8 @@ UPSTREAM_TIMEOUT_SECONDS=12
 | --- | --- | --- |
 | 國際出境 | [INTDEP](https://www.kia.gov.tw/Announce/NewsArea/InstantSchedule_INTDEP.json) | `goalAirportName / goalAirportCode`，目的地 |
 | 國際入境 | [INTARR](https://www.kia.gov.tw/Announce/NewsArea/InstantSchedule_INTARR.json) | `upAirportName / upAirportCode`，來自地點 |
-| 國內出境 | [DOMDEP](https://www.kia.gov.tw/Announce/NewsArea/InstantSchedule_DOMDEP.json) | 目的地 |
-| 國內入境 | [DOMARR](https://www.kia.gov.tw/Announce/NewsArea/InstantSchedule_DOMARR.json) | 來自地點 |
+| 國內離站 | [DOMDEP](https://www.kia.gov.tw/Announce/NewsArea/InstantSchedule_DOMDEP.json) | 目的地 |
+| 國內到站 | [DOMARR](https://www.kia.gov.tw/Announce/NewsArea/InstantSchedule_DOMARR.json) | 來自地點 |
 
 `expectTime` 是表定時間；`realTime` 是異動時間，狀態已離站／抵達時標為實際，其餘為預計。國際線異動時間顯示在狀態區，國內線另有預計／實際欄位。時間以 `HHmm` 呈現，缺值為 `—`。不因時間差自行判定延誤，未知狀態原樣顯示，共掛文字不任意合併或刪除。英文為已知狀態的介面翻譯；未提供的行李轉盤、領取狀態等資訊不捏造。
 

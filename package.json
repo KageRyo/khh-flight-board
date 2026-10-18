@@ -3,7 +3,7 @@
   "version": "0.2.0",
   "private": true,
   "type": "module",
-  "description": "高雄小港機場國際與國內入出境現場風格航班看板",
+  "description": "高雄小港機場國際入出境與國內到離站現場風格航班看板",
   "engines": { "node": ">=22.19" },
   "scripts": {
     "start": "node --env-file-if-exists=.env server.mjs",
