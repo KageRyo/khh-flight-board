@@ -7,7 +7,7 @@ const notice = mountNotice($('screen-footer'));
 const mode = document.documentElement.dataset.display === 'counter' ? 'counter' : 'gate';
 const isStatic = document.documentElement.dataset.mode === 'static';
 const params = new URLSearchParams(location.search);
-let source = ['int','dom'].includes(params.get('source')) ? params.get('source') : 'int';
+let source = mode === 'gate' && params.get('source') === 'dom' ? 'dom' : 'int';
 let requested = {location:params.get(mode) || '',airline:params.get('airline') || '',flight:params.get('flight') || ''};
 let snapshot = null, selection, problem = '', loading = false, generation = 0, controller, timer, pollSeconds = 60;
 const dateFormat = new Intl.DateTimeFormat('zh-TW',{timeZone:'Asia/Taipei',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false});

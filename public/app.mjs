@@ -85,7 +85,7 @@ function renderStatus(){
   if(snapshot?.storageWarning)notices.push(snapshot.storageWarning);if(cacheWarning)notices.push(cacheWarning);
   notice.update(notices.join(' '),JSON.stringify([source,...notices]));
   $('refresh').disabled=loading;
-  $('poll-label').textContent=STATIC?'Pages：每 60 秒檢查快照 / GitHub 約每 5 分鐘取得官方資料（排程可能延遲）':`本機每 ${pollSeconds} 秒查詢官方資料 · 非內部 FIDS 同步`;
+  $('poll-label').textContent=STATIC?'每 60 秒檢查快照':`每 ${pollSeconds} 秒查詢資料`;
 }
 function render(){
   renderStatus();
