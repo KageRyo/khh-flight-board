@@ -34,5 +34,5 @@ jobs:
       - name: Report unhealthy snapshots
         if: steps.freshness.outcome == 'failure'
         run: |
-          echo "Published snapshots are unhealthy. See the recovery step; a completed publication triggers another check." >> "$GITHUB_STEP_SUMMARY"
+          echo "Published snapshots are unhealthy. See the recovery step; recovery publications verify snapshots after deployment." >> "$GITHUB_STEP_SUMMARY"
           exit 1
