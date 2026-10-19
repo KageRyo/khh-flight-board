@@ -28,7 +28,7 @@ export async function buildPages({outDir,previousBase,fetcher=fetch,now=Date.now
     }
   }));
   await mkdir(outDir,{recursive:true});await cp(publicDir,outDir,{recursive:true});await mkdir(join(outDir,'data'),{recursive:true});
-  const assets=['index.html','app.mjs','model.mjs','config.mjs','styles.css','khh-mark.svg','marquee.mjs','marquee.css','notices.json','gate.html','counter.html','display.mjs','display-model.mjs','display.css','favicon.svg'];
+  const assets=['index.html','app.mjs','model.mjs','config.mjs','styles.css','khh-mark.svg','marquee.mjs','notice.mjs','marquee.css','notices.json','gate.html','counter.html','display.mjs','display-model.mjs','display.css','favicon.svg'];
   const contents=await Promise.all(assets.map(name=>readFile(join(publicDir,name),'utf8')));
   const version=createHash('sha256').update(contents.join('\n')).digest('hex').slice(0,12);
   for(const name of ['index.html','gate.html','counter.html']){
