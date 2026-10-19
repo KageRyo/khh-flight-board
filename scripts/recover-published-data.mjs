@@ -24,7 +24,7 @@ export async function recoverPublishedData({ repository, token, now = Date.now, 
   }
   // Do not retry this POST: an ambiguous network failure may already have created a run.
   await request(`${endpoint}/dispatches`, 'POST', { ref: 'main', inputs: { recovery: true } });
-  return { action: 'dispatched', message: '已觸發 main 補發；發布完成後會再次檢查資料新鮮度' };
+  return { action: 'dispatched', message: '已觸發 main 補發；補發工作會在發布後驗證資料新鮮度' };
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href) {

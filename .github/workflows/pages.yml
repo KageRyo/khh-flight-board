@@ -43,3 +43,17 @@ jobs:
           path: dist
       - uses: actions/deploy-pages@v4
         id: deployment
+      - name: Verify recovered snapshots
+        if: inputs.recovery
+        run: |
+          for attempt in 1 2 3; do
+            if npm run check:freshness; then
+              exit 0
+            fi
+            if [ "$attempt" -lt 3 ]; then
+              sleep 10
+            fi
+          done
+          exit 1
+        env:
+          SITE_URL: ${{ steps.pages.outputs.base_url }}
