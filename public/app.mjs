@@ -1,9 +1,11 @@
 import { validSnapshot } from './model.mjs';
 import { BOARDS, sourceUrl, layout, nextRotation } from './config.mjs';
 import { mountMarquee } from './marquee.mjs';
+import { mountNotice } from './notice.mjs';
 const $ = id => document.getElementById(id);
 const STATIC = document.documentElement.dataset.mode === 'static';
 const marquee = mountMarquee($('marquee'));
+const notice = mountNotice($('notice'), () => requestAnimationFrame(render));
 let preferences = {};
 try { const saved = JSON.parse(localStorage.getItem('khh-preferences')); if(saved && typeof saved === 'object') preferences = saved; } catch {}
 let source = [location.hash.slice(1),preferences.source,'int'].find(value=>typeof value==='string'&&Object.hasOwn(BOARDS,value));
@@ -81,9 +83,8 @@ function renderStatus(){
   $('age').textContent=stamp===null?'':`（${age<60?`${age} 秒`:age<3600?`${Math.floor(age/60)} 分鐘`:`${Math.floor(age/3600)} 小時`}前）`;
   const notices=[];if(problem)notices.push(problem);if(stale&&snapshot)notices.push(`顯示${origin||'保留'}快取，航班可能已異動。`);
   if(snapshot?.storageWarning)notices.push(snapshot.storageWarning);if(cacheWarning)notices.push(cacheWarning);
-  const changed=$('notice').hidden!==!notices.length;
-  $('notice').hidden=!notices.length;$('notice').textContent=notices.join(' ');$('refresh').disabled=loading;
-  if(changed)requestAnimationFrame(render);
+  notice.update(notices.join(' '),JSON.stringify([source,...notices]));
+  $('refresh').disabled=loading;
   $('poll-label').textContent=STATIC?'Pages：每 60 秒檢查快照 / GitHub 約每 5 分鐘取得官方資料（排程可能延遲）':`本機每 ${pollSeconds} 秒查詢官方資料 · 非內部 FIDS 同步`;
 }
 function render(){

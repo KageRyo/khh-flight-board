@@ -1,7 +1,9 @@
 import { BOARDS, sourceUrl } from './config.mjs';
 import { validSnapshot } from './model.mjs';
+import { mountNotice } from './notice.mjs';
 import { flightKey, selectDisplay, safeAirlineLogo } from './display-model.mjs';
 const $ = id => document.getElementById(id);
+const notice = mountNotice($('screen-footer'));
 const mode = document.documentElement.dataset.display === 'counter' ? 'counter' : 'gate';
 const isStatic = document.documentElement.dataset.mode === 'static';
 const params = new URLSearchParams(location.search);
@@ -53,7 +55,8 @@ function health() {
   const age=seconds<60?`${seconds} 秒`:seconds<3600?`${Math.floor(seconds/60)} 分鐘`:`${Math.floor(seconds/3600)} 小時`;
   $('health').textContent=snapshot?`${loading?'更新中 · ':''}${stale?'保留資料':'官方資料'} · 最後成功 ${dateFormat.format(new Date(stamp))}（${age}前）`:(loading?'正在取得官方資料':'尚無成功資料，將自動重試');
   const notices=[problem,stale?`保留 ${age}前資料，航班可能已異動，請以現場公告為準。`:'',snapshot?.storageWarning || ''].filter(Boolean);
-  $('screen-footer').hidden=!notices.length;$('notice').hidden=!notices.length;$('notice').textContent=notices.join(' ');$('refresh').disabled=loading;
+  notice.update(notices.join(' '),JSON.stringify([source,problem,stale,snapshot?.storageWarning || '']));
+  $('refresh').disabled=loading;
 }
 function render() {
   selection=selectDisplay(snapshot?.flights || [],mode,requested);
