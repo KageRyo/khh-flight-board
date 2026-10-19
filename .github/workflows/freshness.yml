@@ -9,16 +9,30 @@ on:
     branches: [main]
 permissions:
   contents: read
+  actions: write
 concurrency:
   group: published-data-check
   cancel-in-progress: false
 jobs:
   freshness:
     runs-on: ubuntu-latest
-    timeout-minutes: 2
+    timeout-minutes: 3
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - run: npm run check:freshness
+      - name: Check published snapshots
+        id: freshness
+        continue-on-error: true
+        run: npm run check:freshness
+      - name: Recover outdated or unavailable snapshots
+        if: steps.freshness.outcome == 'failure'
+        run: node scripts/recover-published-data.mjs
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+      - name: Report unhealthy snapshots
+        if: steps.freshness.outcome == 'failure'
+        run: |
+          echo "Published snapshots are unhealthy. See the recovery step; a completed publication triggers another check." >> "$GITHUB_STEP_SUMMARY"
+          exit 1

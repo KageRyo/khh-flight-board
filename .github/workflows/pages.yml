@@ -1,8 +1,14 @@
 name: Publish flight board
+run-name: ${{ inputs.recovery && 'Recover published flight data' || 'Publish flight board' }}
 on:
   push:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      recovery:
+        description: Triggered by published-data recovery
+        type: boolean
+        default: false
   schedule:
     - cron: '3-59/5 * * * *'
 permissions:
