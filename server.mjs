@@ -1,7 +1,7 @@
 import { createServer } from 'node:http';
-import { readFile } from 'node:fs/promises';
+import { readdir, readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
-import { join } from 'node:path';
+import { extname, join } from 'node:path';
 import { createFeed, SOURCES } from './lib/feed.mjs';
 
 const root = fileURLToPath(new URL('.', import.meta.url));
@@ -16,25 +16,14 @@ const timeoutMs = numeric('UPSTREAM_TIMEOUT_SECONDS', 12, 2, 25) * 1000;
 const feeds = Object.fromEntries(Object.keys(SOURCES).map(source => [source, createFeed({
   source, intervalMs: pollSeconds * 1000, timeoutMs, cacheFile: join(root, '.cache', `${source}.json`)
 })]));
-const files = {
-  '/': ['index.html', 'text/html; charset=utf-8'],
-  '/index.html': ['index.html', 'text/html; charset=utf-8'],
-  '/gate.html': ['gate.html', 'text/html; charset=utf-8'],
-  '/counter.html': ['counter.html', 'text/html; charset=utf-8'],
-  '/display.mjs': ['display.mjs', 'text/javascript; charset=utf-8'],
-  '/display-model.mjs': ['display-model.mjs', 'text/javascript; charset=utf-8'],
-  '/display.css': ['display.css', 'text/css; charset=utf-8'],
-  '/app.mjs': ['app.mjs', 'text/javascript; charset=utf-8'],
-  '/model.mjs': ['model.mjs', 'text/javascript; charset=utf-8'],
-  '/config.mjs': ['config.mjs', 'text/javascript; charset=utf-8'],
-  '/styles.css': ['styles.css', 'text/css; charset=utf-8'],
-  '/favicon.svg': ['favicon.svg', 'image/svg+xml'],
-  '/khh-mark.svg': ['khh-mark.svg', 'image/svg+xml'],
-  '/marquee.mjs': ['marquee.mjs', 'text/javascript; charset=utf-8'],
-  '/marquee.css': ['marquee.css', 'text/css; charset=utf-8'],
-  '/notices.json': ['notices.json', 'application/json; charset=utf-8'],
-  '/social-preview.png': ['social-preview.png', 'image/png']
+const types = {
+  '.html': 'text/html; charset=utf-8', '.mjs': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8',
+  '.json': 'application/json; charset=utf-8', '.svg': 'image/svg+xml', '.png': 'image/png'
 };
+// 啟動時列出 public/ 第一層檔案，新增模組不必另外登記；請求只能取得清單內的檔案。
+const files = Object.fromEntries((await readdir(join(root, 'public'))).filter(name => types[extname(name)])
+  .map(name => [`/${name}`, [name, types[extname(name)]]]));
+files['/'] = files['/index.html'];
 const server = createServer(async (req, res) => {
   res.setHeader('X-Content-Type-Options', 'nosniff');
   res.setHeader('Referrer-Policy', 'no-referrer');
@@ -50,7 +39,7 @@ const server = createServer(async (req, res) => {
       res.writeHead(data.lastSuccess ? 200 : 503, { 'Content-Type': 'application/json; charset=utf-8' });
       return res.end(req.method === 'HEAD' ? undefined : JSON.stringify(data));
     }
-    const file = files[url.pathname];
+    const file = Object.hasOwn(files, url.pathname) && files[url.pathname];
     if (!file) { res.writeHead(404); return res.end('Not found'); }
     const content = await readFile(join(root, 'public', file[0]));
     res.writeHead(200, { 'Content-Type': file[1] });

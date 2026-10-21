@@ -9,7 +9,7 @@
 - [國內離站](https://kageryo.github.io/khh-flight-board/#dom)
 - [國內到站](https://kageryo.github.io/khh-flight-board/#dom-arr)
 
-官方 JSON 目前沒有允許跨站讀取的 CORS 標頭，GitHub Pages 也無法執行 Node.js 代理。因此線上版由 GitHub Actions **約每 5 分鐘**抓取四組官方資料並發布靜態快照，頁面每 **60 秒**檢查網站上的新快照。排程與發布可能延遲；請以頁尾的實際取得時間判斷新鮮度，不是每 60 秒直接抓官方資料。
+官方 JSON 目前沒有允許跨站讀取的 CORS 標頭，GitHub Pages 也無法執行 Node.js 代理。因此線上版由 GitHub Actions 排程抓取四組官方資料並發布靜態快照，頁面每 **60 秒**檢查網站上的新快照。排程雖設定每 5 分鐘，但 GitHub 常大幅延後或略過，實際約 1 至數小時更新一次；請以頁尾的實際取得時間判斷新鮮度，不是每 60 秒直接抓官方資料。
 
 最後成功取得超過 **15 分鐘**時，線上版會顯示快取警示。官方故障時會嘗試保留上一次已發布的有效快照與原始成功時間；若任何資料源無法取得、且沒有有效舊快照，建置中止，現有網站繼續服務。可於 [Actions](https://github.com/KageRyo/khh-flight-board/actions/workflows/pages.yml) 手動執行 `Run workflow` 重試。
 
