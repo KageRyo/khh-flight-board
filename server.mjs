@@ -1,5 +1,5 @@
 import { createServer } from 'node:http';
-import { readFile } from 'node:fs/promises';
+import { readdir, readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { extname, join } from 'node:path';
 import { createFeed, SOURCES } from './lib/feed.mjs';
@@ -20,6 +20,10 @@ const types = {
   '.html': 'text/html; charset=utf-8', '.mjs': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8',
   '.json': 'application/json; charset=utf-8', '.svg': 'image/svg+xml', '.png': 'image/png'
 };
+// 啟動時列出 public/ 第一層檔案，新增模組不必另外登記；請求只能取得清單內的檔案。
+const files = Object.fromEntries((await readdir(join(root, 'public'))).filter(name => types[extname(name)])
+  .map(name => [`/${name}`, [name, types[extname(name)]]]));
+files['/'] = files['/index.html'];
 const server = createServer(async (req, res) => {
   res.setHeader('X-Content-Type-Options', 'nosniff');
   res.setHeader('Referrer-Policy', 'no-referrer');
@@ -35,12 +39,10 @@ const server = createServer(async (req, res) => {
       res.writeHead(data.lastSuccess ? 200 : 503, { 'Content-Type': 'application/json; charset=utf-8' });
       return res.end(req.method === 'HEAD' ? undefined : JSON.stringify(data));
     }
-    // 直接提供 public/ 第一層檔案，新增模組不必另外登記；名稱不含斜線，無法離開目錄。
-    const name = url.pathname === '/' ? 'index.html' : url.pathname.slice(1);
-    const type = /^[\w.-]+$/.test(name) && types[extname(name)];
-    const content = type && await readFile(join(root, 'public', name)).catch(err => { if (err.code === 'ENOENT') return null; throw err; });
-    if (!content) { res.writeHead(404); return res.end('Not found'); }
-    res.writeHead(200, { 'Content-Type': type });
+    const file = Object.hasOwn(files, url.pathname) && files[url.pathname];
+    if (!file) { res.writeHead(404); return res.end('Not found'); }
+    const content = await readFile(join(root, 'public', file[0]));
+    res.writeHead(200, { 'Content-Type': file[1] });
     res.end(req.method === 'HEAD' ? undefined : content);
   } catch (err) {
     console.error(err.message);
