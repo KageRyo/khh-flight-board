@@ -1,4 +1,4 @@
-import { cp, mkdir, readFile, writeFile } from 'node:fs/promises';
+import { cp, mkdir, readdir, readFile, writeFile } from 'node:fs/promises';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { resolve, join } from 'node:path';
 import { createHash } from 'node:crypto';
@@ -28,10 +28,11 @@ export async function buildPages({outDir,previousBase,fetcher=fetch,now=Date.now
     }
   }));
   await mkdir(outDir,{recursive:true});await cp(publicDir,outDir,{recursive:true});await mkdir(join(outDir,'data'),{recursive:true});
-  const assets=['index.html','app.mjs','model.mjs','config.mjs','styles.css','khh-mark.svg','marquee.mjs','notice.mjs','marquee.css','notices.json','gate.html','counter.html','display.mjs','display-model.mjs','display.css','favicon.svg'];
+  // 由目錄取得文字資產，新增檔案自動納入版本雜湊，不必手動維護清單。
+  const assets=(await readdir(publicDir)).filter(name=>/\.(?:html|mjs|css|svg|json)$/.test(name)).sort();
   const contents=await Promise.all(assets.map(name=>readFile(join(publicDir,name),'utf8')));
   const version=createHash('sha256').update(contents.join('\n')).digest('hex').slice(0,12);
-  for(const name of ['index.html','gate.html','counter.html']){
+  for(const name of assets.filter(name=>name.endsWith('.html'))){
     const html=contents[assets.indexOf(name)].replace('<html lang="zh-Hant"','<html lang="zh-Hant" data-mode="static"')
       .replace(/(src|href)="(\.\/[^"?]+\.(?:mjs|css|svg))"/g,`$1="$2?v=${version}"`);
     await writeFile(join(outDir,name),html);

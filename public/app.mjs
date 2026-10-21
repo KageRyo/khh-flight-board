@@ -24,7 +24,7 @@ function savePreferences(){
 renderRotation();
 const dateFormat = new Intl.DateTimeFormat('zh-TW',{timeZone:'Asia/Taipei',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false});
 const clockFormat = new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Taipei',hour:'2-digit',minute:'2-digit',hour12:false});
-const englishStatus = {'離站':'Departed','起飛':'Departed','抵達':'Arrived','到站':'Arrived','登機中':'Boarding','報到中':'Check In','辦理報到':'Check In','準時':'On Time','延誤':'Delayed','取消':'Cancelled','尚未登機':'Yet to board','登機門關閉':'Gate Closed','最後登機':'Final Call'};
+const englishStatus = {'離站':'Departed','起飛':'Departed','抵達':'Arrived','到站':'Arrived','登機中':'Boarding','報到中':'Check In','辦理報到':'Check In','準時':'On Time','延誤':'Delayed','延遲':'Delayed','取消':'Cancelled','尚未登機':'Yet to board','登機門關閉':'Gate Closed','最後登機':'Final Call'};
 const airlineNames = {CAL:'中華航空',EVA:'長榮航空',UIA:'立榮',MDA:'華信',DAC:'德安',TTW:'tigerair',CPA:'國泰航空',HKE:'香港快運',APJ:'peach',HVN:'越南航空',VJC:'VietJet Air',TWB:'德威航空',AXM:'AirAsia',AIQ:'AirAsia',CEB:'Cebu Pacific'};
 const airlineEnglish = {CAL:'CHINA AIRLINES',EVA:'EVA AIR',UIA:'UNI AIR',MDA:'MANDARIN AIRLINES',DAC:'DAILY AIR',TTW:'tigerair',CPA:'CATHAY PACIFIC',HKE:'HK express',APJ:'peach',HVN:'VIETNAM AIRLINES',VJC:'VietJet Air',TWB:'t’way',AXM:'AirAsia',AIQ:'AirAsia',CEB:'CEBU PACIFIC'};
 function metrics(){

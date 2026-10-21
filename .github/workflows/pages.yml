@@ -21,7 +21,7 @@ concurrency:
 jobs:
   publish:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 8
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -45,13 +45,14 @@ jobs:
         id: deployment
       - name: Verify recovered snapshots
         if: inputs.recovery
+        # Pages can serve the previous deployment for a while after deploy succeeds; wait up to ~3 minutes.
         run: |
-          for attempt in 1 2 3; do
+          for attempt in $(seq 1 12); do
             if npm run check:freshness; then
               exit 0
             fi
-            if [ "$attempt" -lt 3 ]; then
-              sleep 10
+            if [ "$attempt" -lt 12 ]; then
+              sleep 15
             fi
           done
           exit 1
